@@ -1,0 +1,21 @@
+node_modules/
+/.env.local
+/.umirc.local.ts
+/config/config.local.ts
+src/.umi/
+src/.umi-production/
+src/.umi-test/
+
+# umi
+.umi
+.umi-production
+
+/dist*
+/dist.zip
+/.mfsu
+/.vscode
+.swc
+package-lock.json
+.yarn
+yarn.lock
+.DS_Store
