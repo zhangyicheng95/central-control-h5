@@ -38,6 +38,18 @@ const AutoLandscape = (props: any) => {
         const mediaQuery = window.matchMedia("(orientation: portrait)");
         mediaQuery.addEventListener('change', handleOrientationChange);
 
+        // 请求全屏
+        document.documentElement?.requestFullscreen?.()?.then?.(() => {
+            // Use type assertion since lock() is available but TypeScript doesn't recognize it
+            (screen?.orientation as any)?.lock?.('landscape')?.catch?.(() => {
+                // Silently handle errors if orientation lock fails
+                console.warn('Failed to lock screen orientation');
+            });
+        }).catch(() => {
+            // Handle if fullscreen request fails
+            console.warn('Failed to enter fullscreen mode');
+        });
+
         // 组件卸载时移除监听
         return () => {
             mediaQuery.removeEventListener('change', handleOrientationChange);

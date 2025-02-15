@@ -8,107 +8,107 @@ import {
   Switch,
   Toast,
 } from 'antd-mobile';
-import {
-  AddCircleOutline,
-  AntOutline,
-  DownOutline,
-  FolderOutline,
-  ReceivePaymentOutline,
-  RightOutline,
-  ScanningOutline,
-  SearchOutline,
-  TravelOutline,
-  UploadOutline,
-  UserContactOutline,
-} from 'antd-mobile-icons';
 import { useLayoutEffect, useState } from 'react';
 import styles from './index.less';
+import lightingOn from '@/assets/images/home/lightingOn.svg';
+import lightingOff from '@/assets/images/home/lightingOff.svg';
+import SceneOutline from '@/assets/images/home/scene.svg';
+import SettingOutline from '@/assets/images/home/setting.svg';
+import ThemeOutline from '@/assets/images/home/theme.svg';
+import ReloadOutline from '@/assets/images/home/reload.svg';
+import { reStartServer } from '@/services/api';
 
 export default function IndexPage() {
-  const colors = ['#ace0ff', '#bcffbd', '#e4fabd', '#ffcfac'];
-  const items = colors.map((color, index) => (
-    <Swiper.Item key={index}>
-      <div
-        className={styles.content}
-        style={{ background: color }}
-        onClick={() => {
-          Toast.show(`你点击了卡片 ${index + 1}`);
-        }}
-      >
-        {index + 1}
-      </div>
-    </Swiper.Item>
-  ));
-  const [enableDarkMode, setEnableDarkMode] = useState(false);
+  const [openStatus, setOpenStatus] = useState(0);
 
-  useLayoutEffect(() => {
-    document.documentElement.setAttribute(
-      'data-prefers-color-scheme',
-      enableDarkMode ? 'dark' : 'light',
-    );
-  }, [enableDarkMode]);
+  const renderTabItemIcon = (name: string) => {
+    switch (name) {
+      case 'scene':
+        return SceneOutline
+      case 'setting':
+        return SettingOutline
+      case 'theme':
+        return ThemeOutline
+      case 'reload':
+        return ReloadOutline
+    }
+  }
 
   return (
-    <div className={styles.homeWarp}>
-      <div className={styles.adWarp}>
-        <Swiper autoplay={true} loop={true}>
-          {items}
-        </Swiper>
+    <div className={`flex-box-justify-around ${styles.homeWarp}`}>
+      <div className="flex-box-column home-box-left glass-block">
+        <div className="home-box-left-title">
+          整馆控制
+        </div>
+        <div className="flex-box home-box-left-content">
+          {
+            [{ title: '一键开馆', value: 1 }, { title: '一键关馆', value: 0 }]
+              .map((item: any, index: number) => {
+                const { title, value } = item;
+                return (
+                  <div
+                    className={`flex-box-center glass-block-linear home-box-left-content-item`}
+                    key={`home-box-left-content-item-${index}`}
+                    onClick={() => {
+                      setOpenStatus(value);
+                    }}
+                  >
+                    <img
+                      src={!!value ? lightingOn : lightingOff} alt=""
+                      className='home-box-left-content-item-icon'
+                    />
+                    {title}
+                  </div>
+                )
+              })
+          }
+        </div>
       </div>
-      <div>
-        <Space wrap>
-          <Button
-            onClick={() => {
-              Toast.show({
-                icon: 'success',
-                content: '保存成功',
-              });
-            }}
-          >
-            成功
-          </Button>
-          <Button
-            onClick={() => {
-              Toast.show({
-                icon: 'fail',
-                content: '名称已存在',
-              });
-            }}
-          >
-            失败
-          </Button>
-          <Button
-            onClick={() => {
-              Toast.show({
-                icon: 'loading',
-                content: '加载中…',
-              });
-            }}
-          >
-            加载中
-          </Button>
-          <Button
-            onClick={() => {
-              Toast.show({
-                content: '上传中',
-                icon: <UploadOutline />,
-              });
-            }}
-          >
-            自定义图标
-          </Button>
-        </Space>
-      </div>
-      <div>
-        <Space align="center">
-          <div>Dark Mode</div>
-          <Switch
-            checked={enableDarkMode}
-            onChange={(v) => {
-              setEnableDarkMode(v);
-            }}
-          />
-        </Space>
+      <div className="flex-box-column home-box-right glass-block">
+        <div className="home-box-right-title">
+          系统控制
+        </div>
+        <div className="flex-box home-box-right-content">
+          {
+            [
+              { title: '情景模式', key: 'scene', value: 0 }, { title: '设置中心', key: 'setting', value: 1 },
+              { title: '切换主题', key: 'theme', value: 2 }, { title: '重启服务器', key: 'reload', value: 3 }
+            ]
+              .map((item: any, index: number) => {
+                const { title, value, key } = item;
+                return (
+                  <div
+                    className={`flex-box-center glass-block home-box-right-content-item`}
+                    key={`home-box-right-content-item-${key}`}
+                    onClick={() => {
+                      if (key === 'reload') {
+                        reStartServer({}).then((res: any) => {
+                          if (res?.code === 200) {
+                            Toast.show({
+                              icon: 'success',
+                              content: '重启成功',
+                            });
+                          } else {
+                            Toast.show({
+                              icon: 'fail',
+                              content: '重启失败',
+                            });
+                          };
+                        });
+                      } else if (key === 'scene') {
+                        history.push(`/tab-bar/index/${key}`);
+                      } else if (key === 'setting') {
+                        history.push(`/tab-bar/index/${key}`);
+                      }
+                    }}
+                  >
+                    <img src={renderTabItemIcon(key)} alt="" className='home-box-right-content-item-icon' />
+                    {title}
+                  </div>
+                )
+              })
+          }
+        </div>
       </div>
     </div>
   );

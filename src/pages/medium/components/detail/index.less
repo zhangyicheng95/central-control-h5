@@ -1,0 +1,123 @@
+.medium-detail {
+  width: 100%;
+  height: 100%;
+
+  :global {
+    .medium-detail-header {
+      width: 100%;
+      padding: 2%;
+
+      &-title {
+        flex: 1;
+        border-left: 4px solid var(--adm-color-primary);
+        padding-left: 8px;
+        line-height: 1;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      &-right {
+        &-item {
+          padding: 6px 12px;
+          line-height: 1;
+          transform: all 1s;
+        }
+
+        &-item-active {
+          background-color: var(--adm-color-primary);
+          border-radius: 10px;
+          overflow: hidden;
+        }
+      }
+    }
+
+    .medium-detail-content {
+      flex: 1;
+      flex-wrap: wrap;
+      gap: 4% 2%;
+      padding: 0 2%;
+
+      &-item {
+        width: calc(94% / 4);
+        height: 48%;
+        flex-direction: column;
+        overflow: hidden;
+        border: 0;
+
+        &-icon-box {
+          width: 100%;
+          height: calc(100% - 28px);
+          background-color: #000;
+
+          &-video {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        &-name {
+          font-size: 12px;
+          padding-top: 8px;
+          line-height: 1;
+          white-space: nowrap;
+          text-align: center;
+        }
+      }
+
+      &-item-active {
+        background-color: var(--adm-color-primary);
+      }
+    }
+
+    .medium-detail-footer {
+      margin-top: 2%;
+      width: 100%;
+      padding: 2%;
+      gap: 18px;
+
+      &-left {
+        gap: 18px;
+
+        &-item {
+          width: 24px;
+          height: 24px;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+
+      &-center {
+        gap: 8px;
+        flex: 1;
+
+        &-time {
+          width: 104px;
+          text-align: center;
+          white-space: nowrap;
+        }
+
+        .adm-slider {
+          flex: 1;
+        }
+      }
+
+      &-right {
+        gap: 18px;
+
+        &-item {
+          width: 24px;
+          height: 24px;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+}

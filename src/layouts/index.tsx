@@ -28,9 +28,7 @@ export const TabBarContext = React.createContext<{
  * @url https://umijs.org/zh-CN/docs/convention-routing#%E4%B8%8D%E5%90%8C%E7%9A%84%E5%85%A8%E5%B1%80-layout
  */
 export default () => {
-  const [taBarItemValues, setTabBarItemValues] = useState<
-    TabBarItemValueProps | any
-  >({});
+  const [taBarItemValues, setTabBarItemValues] = useState<any>({});
   const { pathname } = useLocation();
   const props = useOutletContext();
 
@@ -61,10 +59,8 @@ export default () => {
         }}
       >
         <AutoLandscape>
-
           <div className="global-layout">{getLayoutChildren}</div>
         </AutoLandscape>
-
       </TabBarContext.Provider>
     </ConfigProvider>
   );

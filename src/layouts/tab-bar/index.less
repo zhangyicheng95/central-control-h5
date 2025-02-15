@@ -22,15 +22,34 @@
         box-shadow: 0 0 10px 0 #999999;
       }
 
-      .view-warp {
-        position: relative;
-        overflow-y: auto;
-        height: 100%;
+      .header-box {
+        width: 100%;
+        line-height: 1;
+        padding: 8px 24px 4px;
 
-        >div {
+        .header-title {
           width: 100%;
-          height: 100%;
+          line-height: 1;
         }
+
+        .header-sub-title {
+          width: 100%;
+          line-height: 1;
+          opacity: 0.5;
+          transform: scale(0.5);
+          transform-origin: left;
+        }
+
+        .header-status {
+          color: var(--adm-color-success);
+          gap: 4px;
+        }
+      }
+
+      .view-warp {
+        flex: 1;
+        padding: 3% 4%;
+        overflow: hidden;
 
         &::-webkit-scrollbar {
           display: none;
@@ -41,13 +60,34 @@
 
     .tab-box {
       width: 100%;
-      height: 50px;
-      background-color: #fff;
+      padding: 8px 24px;
+      font-size: var(--adm-font-size-1);
+      gap: 12px;
 
       .tab-item {
         flex: 1;
         height: 100%;
-        background-color: #fff;
+        padding: 12px 0;
+        gap: 4px;
+        position: relative;
+
+        &-icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .tab-item-active {
+        color: var(--adm-color-primary);
+      }
+
+      .trapezoid {
+        position: absolute;
+        bottom: 0;
+        width: 50%;
+        height: 2px;
+        border-bottom: 2px solid var(--adm-color-primary);
+        box-shadow: 0 -6px 20px 1px var(--adm-color-primary);
       }
     }
   }

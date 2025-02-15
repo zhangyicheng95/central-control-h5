@@ -1,0 +1,59 @@
+.device {
+  width: 100%;
+  height: 100%;
+  padding: 1.5% 2%;
+  overflow: hidden;
+  gap: 2%;
+
+  :global {
+
+    .device-title {
+      white-space: nowrap;
+      margin-bottom: 2%;
+
+      &-text {
+        &-icon {
+          width: 20px;
+          height: 20px;
+        }
+
+        &-text {
+          margin: 0 4px;
+        }
+      }
+
+      &-add {
+        &-text {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .device-content {
+      gap: 4% 2%;
+      width: 100%;
+      flex: 1;
+      flex-wrap: wrap;
+
+      .device-item {
+        width: calc(90% / 6);
+        height: 48%;
+        padding-bottom: 2%;
+        flex-direction: column;
+
+        &-icon-box {
+          height: 50%;
+
+          &-icon {
+            width: 60%;
+          }
+        }
+
+        &-name {
+          font-size: 12px;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
