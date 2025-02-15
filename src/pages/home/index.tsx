@@ -8,7 +8,7 @@ import {
   Switch,
   Toast,
 } from 'antd-mobile';
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import styles from './index.less';
 import lightingOn from '@/assets/images/home/lightingOn.svg';
 import lightingOff from '@/assets/images/home/lightingOff.svg';
@@ -32,7 +32,14 @@ export default function IndexPage() {
       case 'reload':
         return ReloadOutline
     }
-  }
+  };
+
+  useEffect(() => {
+    const box = document.querySelector('.view-warp');
+    if (!box) {
+      window.location.reload();
+    };
+  }, []);
 
   return (
     <div className={`flex-box-justify-around ${styles.homeWarp}`}>

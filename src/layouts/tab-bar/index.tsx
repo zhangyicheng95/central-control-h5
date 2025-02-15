@@ -1,16 +1,9 @@
 import { history, Outlet, useLocation, useOutletContext } from '@umijs/max';
-import { TabBar } from 'antd-mobile/2x';
 import {
-  AlipayCircleFill,
-  AppOutline,
-  MessageFill,
   TransportQRcodeOutline,
-  UnorderedListOutline,
-  UserOutline,
-  AppstoreOutline,
 } from 'antd-mobile-icons';
 import type { TabBarItemProps } from 'antd-mobile/es/components/tab-bar';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { TabBarContext } from '@/layouts';
 import styles from './index.less';
 import homeLight from '@/assets/images/tab/homeLight.svg';
