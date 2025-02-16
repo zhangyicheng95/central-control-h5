@@ -54,7 +54,7 @@ export default function IndexPage() {
                 const { title, value } = item;
                 return (
                   <div
-                    className={`flex-box-center glass-block-linear home-box-left-content-item`}
+                    className={`flex-box-center glass-block-linear home-box-left-content-item ${value ? 'active' : ''}`}
                     key={`home-box-left-content-item-${index}`}
                     onClick={() => {
                       setOpenStatus(value);
