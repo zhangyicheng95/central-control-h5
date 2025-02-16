@@ -1,11 +1,12 @@
 .medium-detail {
   width: 100%;
   height: 100%;
+  position: relative;
 
   :global {
     .medium-detail-header {
       width: 100%;
-      padding: 2%;
+      padding: 16px;
 
       &-title {
         flex: 1;
@@ -33,21 +34,20 @@
     }
 
     .medium-detail-content {
-      flex: 1;
       flex-wrap: wrap;
-      gap: 4% 2%;
-      padding: 0 2%;
+      gap: 16px;
+      overflow-y: auto;
+      margin-bottom: 80px;
 
       &-item {
-        width: calc(94% / 4);
-        height: 48%;
+        width: calc(50% - 8px);
         flex-direction: column;
         overflow: hidden;
         border: 0;
 
         &-icon-box {
           width: 100%;
-          height: calc(100% - 28px);
+          height: calc(100% - 36px);
           background-color: #000;
 
           &-video {
@@ -58,7 +58,7 @@
 
         &-name {
           font-size: 12px;
-          padding-top: 8px;
+          padding: 8px 0;
           line-height: 1;
           white-space: nowrap;
           text-align: center;
@@ -71,10 +71,13 @@
     }
 
     .medium-detail-footer {
-      margin-top: 2%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
       width: 100%;
-      padding: 2%;
-      gap: 18px;
+      padding: 16px;
+      gap: 16px;
 
       &-left {
         gap: 18px;

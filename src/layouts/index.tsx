@@ -6,7 +6,6 @@ import routes from '../../config/routes';
 import TabBarLayout from './tab-bar';
 import { BadgeProps } from 'antd-mobile/es/components/badge';
 import './index.less';
-import AutoLandscape from './AutoLandscape';
 
 export interface TabBarItemValueProps {
   homeBadge?: BadgeProps['content'];
@@ -58,9 +57,7 @@ export default () => {
           callback: (items) => setTabBarItemValues({ ...items }),
         }}
       >
-        <AutoLandscape>
-          <div className="global-layout">{getLayoutChildren}</div>
-        </AutoLandscape>
+        <div className="global-layout">{getLayoutChildren}</div>
       </TabBarContext.Provider>
     </ConfigProvider>
   );

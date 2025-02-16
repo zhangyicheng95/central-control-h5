@@ -188,9 +188,34 @@ export function getFormattedDuration(totalSeconds: number) {
     hours = hours < 10 ? '0' + hours : hours;
     minutes = minutes < 10 ? '0' + minutes : minutes;
     seconds = seconds < 10 ? '0' + seconds : seconds;
-    
+
     return `${hours}:${minutes}:${(seconds + '')?.split?.('.')[0]}`;
-}
+};
+// 毫秒转日期
+export function convertMilliseconds(milliseconds: number) {
+    const date = new Date(milliseconds);
+
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const dayOfWeek = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'][date.getDay()];
+
+    const formattedDate = `${year}年${month}月${day}日  ${dayOfWeek}`;
+    return formattedDate;
+};
+// 毫秒转时间
+export function convertMillisecondsToTime(milliseconds: number) {
+    // 假设您的毫秒数
+    const date = new Date(milliseconds);
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const am_pm = hours >= 12 ? '下午' : '上午';
+
+    hours = hours % 12 || 12;
+
+    const formattedTime = `${am_pm} ${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+    return formattedTime;
+};
 /**
  * 清理所有的时间定时器
  */

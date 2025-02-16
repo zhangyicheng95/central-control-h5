@@ -20,12 +20,12 @@ export default [
         icon: 'device',
         component: '@/pages/device/index',
       },
-      {
-        path: '/tab-bar/lighting',
-        title: '灯光管理',
-        icon: 'lighting',
-        component: '@/pages/lighting/index',
-      },
+      // {
+      //   path: '/tab-bar/lighting',
+      //   title: '灯光管理',
+      //   icon: 'lighting',
+      //   component: '@/pages/lighting/index',
+      // },
       {
         path: '/tab-bar/medium',
         title: '媒体管理',

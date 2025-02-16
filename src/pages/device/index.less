@@ -1,15 +1,13 @@
 .device {
   width: 100%;
   height: 100%;
-  padding: 1.5% 2%;
-  overflow: hidden;
-  gap: 2%;
+  padding: 16px;
+  gap: 16px;
 
   :global {
 
     .device-title {
       white-space: nowrap;
-      margin-bottom: 2%;
 
       &-text {
         &-icon {
@@ -30,28 +28,30 @@
     }
 
     .device-content {
-      gap: 4% 2%;
       width: 100%;
-      flex: 1;
-      flex-wrap: wrap;
+      overflow-y: auto;
+      gap: 16px;
 
       .device-item {
-        width: calc(90% / 6);
-        height: 48%;
-        padding-bottom: 2%;
-        flex-direction: column;
+        width: 100%;
+        padding: 0px 16px;
 
-        &-icon-box {
-          height: 50%;
+        &-left {
+          gap: 8px;
 
-          &-icon {
-            width: 60%;
+          &-icon-box {
+            width: 80px;
+
+            &-icon {
+              width: 100%;
+              height: 100%;
+            }
           }
-        }
 
-        &-name {
-          font-size: 12px;
-          white-space: nowrap;
+          &-name {
+            font-size: 12px;
+            white-space: nowrap;
+          }
         }
       }
     }

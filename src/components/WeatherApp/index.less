@@ -1,0 +1,41 @@
+.weatherBox {
+  height: 100%;
+  font-size: inherit;
+
+  :global {
+    .weather-time {
+      width: 100%;
+
+      &-date {
+        flex: 1;
+      }
+    }
+
+    .weather-content {
+      &-icon {
+        height: 140px;
+        width: 140px;
+
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      &-info {
+        flex: 1;
+        gap: 4px;
+
+        &-top {
+          gap: 4px;
+          font-size: 32px;
+        }
+
+        &-bottom {
+          gap: 8px;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}

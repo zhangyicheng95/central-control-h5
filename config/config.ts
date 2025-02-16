@@ -12,9 +12,18 @@ export default defineConfig({
   //   loading: "@/pages/loading"
   // },
   routes: routes,
-  // nodeModulesTransform: {
-  //   type: "none"
-  // },
+  proxy: {
+    '/weather': {
+      target: 'https://api.openweathermap.org/data/2.5/weather', // 后端服务器地址
+      changeOrigin: true,
+      pathRewrite: { '^/weather': '' },
+    },
+    '/geo': {
+      target: 'http://api.map.baidu.com/geocoder/v2/', // 后端服务器地址
+      changeOrigin: true,
+      pathRewrite: { '^/geo': '' },
+    },
+  },
   history: {
     type: 'hash',
   },

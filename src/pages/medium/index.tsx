@@ -41,6 +41,38 @@ export default () => {
     {
       name: '互动连接屏自定义设备8',
       key: 'medium8',
+    },
+    {
+      name: '互动连接屏自定义设备1',
+      key: 'medium1',
+    },
+    {
+      name: '互动连接屏自定义设备2',
+      key: 'medium2',
+    },
+    {
+      name: '互动连接屏自定义设备3',
+      key: 'medium3',
+    },
+    {
+      name: '互动连接屏自定义设备4',
+      key: 'medium4',
+    },
+    {
+      name: '互动连接屏自定义设备5',
+      key: 'medium5',
+    },
+    {
+      name: '互动连接屏自定义设备6',
+      key: 'medium6',
+    },
+    {
+      name: '互动连接屏自定义设备7',
+      key: 'medium7',
+    },
+    {
+      name: '互动连接屏自定义设备8',
+      key: 'medium8',
     }
   ]);
 

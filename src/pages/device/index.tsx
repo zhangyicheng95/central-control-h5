@@ -77,6 +77,66 @@ export default () => {
       name: 'LED数据大屏',
       key: 'LEDScreen',
       status: false
+    },
+    {
+      name: '沉浸式投影联动1',
+      key: 'conditioner1',
+      status: true
+    },
+    {
+      name: '沉浸式投影联动2',
+      key: 'conditioner2',
+      status: false
+    },
+    {
+      name: '沉浸式投影联动3',
+      key: 'conditioner3',
+      status: true
+    },
+    {
+      name: '企业介绍一体机1',
+      key: 'integratedMachine1',
+      status: false
+    },
+    {
+      name: '企业介绍一体机2',
+      key: 'integratedMachine2',
+      status: true
+    },
+    {
+      name: '55寸一体机',
+      key: 'integratedMachine55',
+      status: false
+    },
+    {
+      name: '65寸一体机',
+      key: 'integratedMachine65',
+      status: true
+    },
+    {
+      name: '移屏联动1',
+      key: 'mobileScreen1',
+      status: false
+    },
+    {
+      name: '移屏联动2',
+      key: 'mobileScreen2',
+      status: true
+    },
+    {
+      name: '移屏联动3',
+      key: 'mobileScreen3',
+      status: false
+    },
+    {
+      name: '大屏魔镜拼接屏',
+      key: 'magicMirror',
+      status: true
+    },
+    {
+      name: 'LED数据大屏',
+      key: 'LEDScreen',
+      status: false
     }
   ]);
   const renderItemIcon = (key: string) => {
@@ -167,7 +227,7 @@ export default () => {
           <Switch checked={deviceList.every((item: any) => item.status)} onChange={(e) => { handleAllSwitchChange(e) }} />
         </div>
       </div>
-      <div className="flex-box device-content">
+      <div className="flex-box-column device-content">
         {
           (deviceList || [])?.map((device: any, index: number) => {
             const { name, key, status } = device;
@@ -176,15 +236,17 @@ export default () => {
                 className="flex-box-justify-between glass-block device-item"
                 key={`device-item-${index}`}
               >
-                <div className="flex-box-center device-item-icon-box">
-                  <img
-                    src={renderItemIcon(key)} alt=""
-                    className="device-item-icon-box-icon"
-                    style={key?.indexOf('power') > -1 ? { width: '40%' } : {}}
-                  />
-                </div>
-                <div className="device-item-name">
-                  {name}
+                <div className="flex-box device-item-left">
+                  <div className="flex-box-center device-item-left-icon-box">
+                    <img
+                      src={renderItemIcon(key)} alt=""
+                      className="device-item-left-icon-box-icon"
+                      style={key?.indexOf('power') > -1 ? { width: '40%' } : {}}
+                    />
+                  </div>
+                  <div className="device-item-name">
+                    {name}
+                  </div>
                 </div>
                 <div className="device-item-status">
                   <Switch checked={status} onChange={(e) => { handleSwitchChange(key, e) }} />

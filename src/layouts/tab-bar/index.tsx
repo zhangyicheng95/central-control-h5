@@ -102,11 +102,6 @@ export default ({ routes }: { routes: any[] }) => {
             >
               {renderTabItemIcon(icon, activeKey === key)}
               {title}
-              {
-                activeKey?.indexOf(key) > -1 ?
-                  <div className="trapezoid"></div>
-                  : null
-              }
             </div>
           })
         }

@@ -193,6 +193,7 @@ export default () => {
               };
               currentItem.currentTime = 0;
               currentItem.play();
+              setPlayStatus(true);
             }} />
           </div>
           <div className="medium-detail-footer-right-item">

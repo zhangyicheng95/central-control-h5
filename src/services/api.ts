@@ -96,6 +96,54 @@ export async function getMediumDetail(params: any) {
                         type: '1',
                         url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
                     },
+                    {
+                        id: '123',
+                        name: '视频名称',
+                        type: '1',
+                        url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
+                    },
+                    {
+                        id: '124',
+                        name: '视频名称',
+                        type: '1',
+                        url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
+                    },
+                    {
+                        id: '125',
+                        name: '视频名称',
+                        type: '1',
+                        url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
+                    },
+                    {
+                        id: '126',
+                        name: '视频名称',
+                        type: '1',
+                        url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
+                    },
+                    {
+                        id: '127',
+                        name: '视频名称',
+                        type: '1',
+                        url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
+                    },
+                    {
+                        id: '128',
+                        name: '视频名称',
+                        type: '1',
+                        url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
+                    },
+                    {
+                        id: '129',
+                        name: '视频名称',
+                        type: '1',
+                        url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
+                    },
+                    {
+                        id: '120',
+                        name: '视频名称',
+                        type: '1',
+                        url: 'https://v.jgvogel.cn/40b7ac1e6695486ab1b5cdf0f18061c8/5fff45d59527495a90cec7c324b0b8c5-3764b8141e0befbc736d86eb4d1371b9-fd.mp4',
+                    }
                 ]
             }
         });

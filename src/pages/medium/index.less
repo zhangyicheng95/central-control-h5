@@ -1,15 +1,13 @@
 .medium {
   width: 100%;
   height: 100%;
-  padding: 1.5% 2%;
-  overflow: hidden;
+  padding: 16px;
   gap: 2%;
 
   :global {
 
     .medium-title {
       white-space: nowrap;
-      margin-bottom: 2%;
 
       &-text {
         &-icon {
@@ -24,20 +22,20 @@
     }
 
     .medium-content {
-      gap: 4% 2%;
+      gap: 16px;
       width: 100%;
-      flex: 1;
+      overflow-y: auto;
       flex-wrap: wrap;
 
       .medium-item {
-        width: calc(94% / 4);
-        height: 48%;
+        float: left;
+        width: calc(50% - 8px);
         flex-direction: column;
         overflow: hidden;
 
         &-icon-box {
           width: 100%;
-          height: calc(100% - 28px);
+          height: calc(100% - 36px);
           background-color: #000;
 
           &-icon {
@@ -48,7 +46,7 @@
 
         &-name {
           font-size: 12px;
-          padding-top: 8px;
+          padding: 8px 0;
           line-height: 1;
           white-space: nowrap;
           text-align: center;
