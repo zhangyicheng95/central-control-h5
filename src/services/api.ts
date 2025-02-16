@@ -3,6 +3,10 @@ import { fetchGet, fetchPost, fetchPut, fetchDelete, upload, BASE_IP } from '@/u
 import * as _ from 'lodash-es';
 
 //主页
+// 一键开馆
+export async function postAllStatus(params: any) {
+    return fetchPost(`/all`, { body: params });
+};
 // 重启服务器
 export async function reStartServer(params: any) {
     return fetchPost(`/reStart`, { body: params });

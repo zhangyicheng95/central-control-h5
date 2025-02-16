@@ -10,16 +10,15 @@ import {
 } from 'antd-mobile';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import styles from './index.less';
-import lightingOn from '@/assets/images/home/lightingOn.svg';
-import lightingOff from '@/assets/images/home/lightingOff.svg';
-import SceneOutline from '@/assets/images/home/scene.svg';
-import SettingOutline from '@/assets/images/home/setting.svg';
-import ThemeOutline from '@/assets/images/home/theme.svg';
-import ReloadOutline from '@/assets/images/home/reload.svg';
-import lightLight from '@/assets/images/tab/lightingLight.svg';
+import lightingOn from '@/assets/images/home/lightingOn.png';
+import lightingOff from '@/assets/images/home/lightingOff.png';
+import SceneOutline from '@/assets/images/home/scene.png';
+import SettingOutline from '@/assets/images/home/setting.png';
+import ThemeOutline from '@/assets/images/home/theme.png';
+import ReloadOutline from '@/assets/images/home/reload.png';
 import powerOn from '@/assets/images/lighting/powerOn.svg';
 import powerOff from '@/assets/images/lighting/powerOff.svg';
-import { getLightingList, postAllLighting, postItemLighting, reStartServer } from '@/services/api';
+import { getLightingList, postAllLighting, postAllStatus, postItemLighting, reStartServer } from '@/services/api';
 import Weather from '@/components/WeatherApp';
 
 export default function IndexPage() {
@@ -238,16 +237,30 @@ export default function IndexPage() {
                   const { title, value } = item;
                   return (
                     <div
-                      className={`flex-box-center glass-block home-box-system-content-bottom-item ${value ? 'active' : ''}`}
+                      className={`flex-box-center glass-block-linear home-box-system-content-bottom-item ${value ? 'active' : ''}`}
                       key={`home-box-system-content-bottom-item-${index}`}
                       onClick={() => {
-                        setOpenStatus(value);
+                        postAllStatus({ value }).then((res: any) => {
+                          if (res.code === 200) {
+                            Toast.show({
+                              icon: 'success',
+                              content: '操作成功',
+                            });
+                          } else {
+                            Toast.show({
+                              icon: 'fail',
+                              content: '操作失败',
+                            });
+                          }
+                        });
                       }}
                     >
-                      <img
-                        src={!!value ? lightingOn : lightingOff} alt=""
-                        className='home-box-system-content-bottom-item-icon'
-                      />
+                      <div className="flex-box-center home-box-system-content-bottom-item-icon-box">
+                        <img
+                          src={!!value ? lightingOn : lightingOff} alt=""
+                          className='home-box-system-content-bottom-item-icon-box-icon'
+                        />
+                      </div>
                       {title}
                     </div>
                   )

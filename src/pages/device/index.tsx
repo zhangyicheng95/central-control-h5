@@ -12,7 +12,14 @@ import {
 import styles from './index.less';
 import { useEffect, useState } from 'react';
 import deviceLight from '@/assets/images/tab/deviceLight.svg';
-import conditioner from '@/assets/images/device/conditioner.svg';
+import tyy1 from '@/assets/images/device/tyy1.png';
+import tyy2 from '@/assets/images/device/tyy2.png';
+import ytjOn from '@/assets/images/device/ytjOn.png';
+import ytjOff from '@/assets/images/device/ytjOff.png';
+import sjOn from '@/assets/images/device/sjOn.png';
+import sjOff from '@/assets/images/device/sjOff.png';
+import pjp from '@/assets/images/device/pjp.png';
+import dp from '@/assets/images/device/dp.png';
 import { getDeviceList, postAllDevice, postItemDevice } from '@/services/api';
 
 export default () => {
@@ -139,32 +146,32 @@ export default () => {
       status: false
     }
   ]);
-  const renderItemIcon = (key: string) => {
+  const renderItemIcon = (key: string, status: boolean) => {
     switch (key) {
       case 'conditioner1':
-        return conditioner
+        return tyy1;
       case 'conditioner2':
-        return conditioner
+        return tyy1;
       case 'conditioner3':
-        return conditioner
+        return tyy2;
       case 'integratedMachine1':
-        return conditioner
+        return status ? ytjOn : ytjOff;
       case 'integratedMachine2':
-        return conditioner
+        return status ? ytjOn : ytjOff;
       case 'integratedMachine55':
-        return conditioner
+        return status ? ytjOn : ytjOff;
       case 'integratedMachine65':
-        return conditioner
+        return status ? ytjOn : ytjOff;
       case 'mobileScreen1':
-        return conditioner
+        return status ? sjOn : sjOff;
       case 'mobileScreen2':
-        return conditioner
+        return status ? sjOn : sjOff;
       case 'mobileScreen3':
-        return conditioner
+        return status ? sjOn : sjOff;
       case 'magicMirror':
-        return conditioner
+        return pjp;
       case 'LEDScreen':
-        return conditioner
+        return dp;
     }
   };
   // 获取设备列表
@@ -239,9 +246,9 @@ export default () => {
                 <div className="flex-box device-item-left">
                   <div className="flex-box-center device-item-left-icon-box">
                     <img
-                      src={renderItemIcon(key)} alt=""
+                      src={renderItemIcon(key, status)} alt=""
                       className="device-item-left-icon-box-icon"
-                      style={key?.indexOf('power') > -1 ? { width: '40%' } : {}}
+                      style={key?.indexOf('mobile') > -1 ? { height: '100%' } : { width: '100%' }}
                     />
                   </div>
                   <div className="device-item-name">
