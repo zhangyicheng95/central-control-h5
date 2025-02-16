@@ -10,16 +10,15 @@ import {
 } from 'antd-mobile';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import styles from './index.less';
-import lightingOn from '@/assets/images/home/lightingOn.svg';
-import lightingOff from '@/assets/images/home/lightingOff.svg';
-import SceneOutline from '@/assets/images/home/scene.svg';
-import SettingOutline from '@/assets/images/home/setting.svg';
-import ThemeOutline from '@/assets/images/home/theme.svg';
-import ReloadOutline from '@/assets/images/home/reload.svg';
-import { reStartServer } from '@/services/api';
+import lightingOn from '@/assets/images/home/lightingOn.png';
+import lightingOff from '@/assets/images/home/lightingOff.png';
+import SceneOutline from '@/assets/images/home/scene.png';
+import SettingOutline from '@/assets/images/home/setting.png';
+import ThemeOutline from '@/assets/images/home/theme.png';
+import ReloadOutline from '@/assets/images/home/reload.png';
+import { postAllStatus, reStartServer } from '@/services/api';
 
 export default function IndexPage() {
-  const [openStatus, setOpenStatus] = useState(0);
 
   const renderTabItemIcon = (name: string) => {
     switch (name) {
@@ -57,7 +56,19 @@ export default function IndexPage() {
                     className={`flex-box-center glass-block-linear home-box-left-content-item ${value ? 'active' : ''}`}
                     key={`home-box-left-content-item-${index}`}
                     onClick={() => {
-                      setOpenStatus(value);
+                      postAllStatus({ value }).then((res: any) => {
+                        if (res?.code === 200) {
+                          Toast.show({
+                            icon: 'success',
+                            content: '操作成功',
+                          });
+                        } else {
+                          Toast.show({
+                            icon: 'fail',
+                            content: '操作失败',
+                          });
+                        }
+                      });
                     }}
                   >
                     <img

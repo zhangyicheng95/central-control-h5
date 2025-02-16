@@ -49,10 +49,10 @@ export default () => {
       if (res?.code === 200) {
         setLightingList((prev: any) => prev.map((item: any) => ({ ...item, id: guid() })))
       } else {
-        Toast.show({
-          icon: 'fail',
-          content: res.message,
-        });
+        // Toast.show({
+        //   icon: 'fail',
+        //   content: res.message,
+        // });
       }
     });
   }, []);

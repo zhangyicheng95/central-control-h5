@@ -12,8 +12,8 @@ import {
 import styles from './index.less';
 import { useEffect, useState } from 'react';
 import lightLight from '@/assets/images/tab/lightingLight.svg';
-import lightingOn from '@/assets/images/lighting/lightingOn.svg';
-import lightingOff from '@/assets/images/lighting/lightingOff.svg';
+import lightingOn from '@/assets/images/lighting/lightingOn.png';
+import lightingOff from '@/assets/images/lighting/lightingOff.png';
 import powerOn from '@/assets/images/lighting/powerOn.svg';
 import powerOff from '@/assets/images/lighting/powerOff.svg';
 
@@ -117,10 +117,10 @@ export default () => {
       if (res.code === 200) {
         setLightingList(res.data);
       } else {
-        Toast.show({
-          icon: 'fail',
-          content: res.message,
-        })
+        // Toast.show({
+        //   icon: 'fail',
+        //   content: res.message,
+        // })
       };
     });
   }, []);
