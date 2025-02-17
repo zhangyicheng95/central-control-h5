@@ -6,17 +6,27 @@ import routes from './routes';
  * 更多相关配置查询 https://umijs.org/zh-CN/docs/config
  */
 export default defineConfig({
+  publicPath: './', // 设置为相对路径
+  history: {
+    type: 'hash',
+  },
   // layout: true,
-  title: 'umi-antd-mobile',
+  title: 'center-control',
   // dynamicImport: {
   //   loading: "@/pages/loading"
   // },
   routes: routes,
-  // nodeModulesTransform: {
-  //   type: "none"
-  // },
-  history: {
-    type: 'hash',
+  proxy: {
+    '/weather': {
+      target: 'https://api.openweathermap.org/data/2.5/weather', // 后端服务器地址
+      changeOrigin: true,
+      pathRewrite: { '^/weather': '' },
+    },
+    '/geo': {
+      target: 'http://api.map.baidu.com/geocoder/v2/', // 后端服务器地址
+      changeOrigin: true,
+      pathRewrite: { '^/geo': '' },
+    },
   },
   layout: false,
   jsMinifierOptions: {
