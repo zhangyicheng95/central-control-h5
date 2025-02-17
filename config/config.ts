@@ -6,7 +6,7 @@ import routes from './routes';
  * 更多相关配置查询 https://umijs.org/zh-CN/docs/config
  */
 export default defineConfig({
-  publicPath: './', // 设置为相对路径
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/', // 设置为相对路径
   history: {
     type: 'hash',
   },
