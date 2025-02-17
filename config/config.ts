@@ -6,8 +6,12 @@ import routes from './routes';
  * 更多相关配置查询 https://umijs.org/zh-CN/docs/config
  */
 export default defineConfig({
+  publicPath: './', // 设置为相对路径
+  history: {
+    type: 'hash',
+  },
   // layout: true,
-  title: 'umi-antd-mobile',
+  title: 'center-control',
   // dynamicImport: {
   //   loading: "@/pages/loading"
   // },
@@ -23,9 +27,6 @@ export default defineConfig({
       changeOrigin: true,
       pathRewrite: { '^/geo': '' },
     },
-  },
-  history: {
-    type: 'hash',
   },
   layout: false,
   jsMinifierOptions: {
