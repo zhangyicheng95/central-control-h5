@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@umijs/max": "^4.2.11",
+    "antd": "^5.24.1",
     "antd-mobile": "^5.36.1",
     "antd-mobile-icons": "^0.3.0",
     "lodash-es": "^4.17.21",

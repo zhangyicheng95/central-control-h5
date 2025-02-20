@@ -1,133 +1,216 @@
 import { history } from '@umijs/max';
 import {
+  ActionSheet,
   Button,
+
   Grid,
+  Input,
   Popover,
+  PullToRefresh,
   Space,
   Swiper,
   Switch,
   Toast,
 } from 'antd-mobile';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './index.less';
-import lightingOn from '@/assets/images/home/lightingOn.png';
-import lightingOff from '@/assets/images/home/lightingOff.png';
-import SceneOutline from '@/assets/images/home/scene.png';
-import SettingOutline from '@/assets/images/home/setting.png';
-import ThemeOutline from '@/assets/images/home/theme.png';
-import ReloadOutline from '@/assets/images/home/reload.png';
-import { postAllStatus, reStartServer } from '@/services/api';
+import btn2 from '@/assets/images/button/red-btn3.png';
+import { Form, Modal } from 'antd';
+import { deleteVideoService, getVideoListService, getVideoPlayService, postAddVideoService } from '@/services/api';
+import { guid } from '@/utils/utils';
 
 export default function IndexPage() {
+  const timerRef = useRef<any>(null);
+  const [form] = Form.useForm();
+  const [addVideo, setAddVideo] = useState(false);
+  const [videoList, setVideoList] = useState<any[]>([
+    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+  ]);
+  const [actionVisible, setActionVisible] = useState('');
 
-  const renderTabItemIcon = (name: string) => {
-    switch (name) {
-      case 'scene':
-        return SceneOutline
-      case 'setting':
-        return SettingOutline
-      case 'theme':
-        return ThemeOutline
-      case 'reload':
-        return ReloadOutline
-    }
-  };
-
+  // 初始化获取已添加的视频列表
+  const getVideoList = () => {
+    getVideoListService().then((res: any) => {
+      if (res?.code === '200') {
+        setVideoList(res?.data || []);
+      } else {
+        Toast.show({
+          content: res?.message || '获取视频列表失败',
+          icon: 'fail',
+        });
+      }
+    });
+  }
   useEffect(() => {
-    const box = document.querySelector('.view-warp');
-    if (!box) {
-      window.location.reload();
-    };
+    getVideoList();
   }, []);
+  // 关闭添加窗口
+  const onAddVideoCancel = () => {
+    setAddVideo(false);
+    form.resetFields();
+  };
+  // 添加视频
+  const OnAddVideo = () => {
+    form.validateFields().then((values) => {
+      postAddVideoService(values).then((res: any) => {
+        if (res?.code === '200') {
+          setVideoList(res?.data || []);
+          onAddVideoCancel();
+        } else {
+          Toast.show({
+            content: res?.message || '添加失败',
+            icon: 'fail',
+          });
+        };
+      });
+    });
+  };
+  // 播放视频
+  const onPlayVideo = (id: string) => {
+    getVideoPlayService({ id }).then((res: any) => {
+      console.log(res);
+      if (res?.code === '200') {
+        Toast.show({
+          content: '播放成功',
+          icon: 'success',
+        });
+      } else {
+        Toast.show({
+          content: res?.message || '播放失败',
+          icon: 'fail',
+        });
+      }
+    });
+  };
+  // 删除视频
+  const onDeleteVideo = (id: string) => {
+    deleteVideoService({ id }).then((res: any) => {
+      if (res?.code === '200') {
+        getVideoList();
+      } else {
+        Toast.show({
+          content: res?.message || '删除失败',
+          icon: 'fail',
+        });
+      }
+    });
+  }
+  const actions: any[] = [
+    { text: '播放此视频', key: 'play', onClick: () => onPlayVideo(actionVisible) },
+    {
+      text: '删除',
+      key: 'delete',
+      description: '删除后数据不可恢复',
+      danger: true,
+      bold: true,
+      onClick: () => onDeleteVideo(actionVisible),
+    },
+  ]
 
   return (
-    <div className={`flex-box-justify-around ${styles.homeWarp}`}>
-      <div className="flex-box-column home-box-left glass-block">
-        <div className="home-box-left-title">
-          整馆控制
+    <div className={`flex-box-column ${styles.homeWarp}`}>
+      <PullToRefresh
+        onRefresh={async () => {
+          getVideoList();
+        }}
+      >
+        <div className="flex-box-justify-end home-top">
+          <div className="home-top-btn" onClick={() => {
+            setAddVideo(true);
+          }}>
+            <div className="home-top-btn-text">
+              添加视频
+            </div>
+          </div>
         </div>
-        <div className="flex-box home-box-left-content">
+        <div className="flex-box home-content">
           {
-            [{ title: '一键开馆', value: 1 }, { title: '一键关馆', value: 0 }]
-              .map((item: any, index: number) => {
-                const { title, value } = item;
-                return (
-                  <div
-                    className={`flex-box-center glass-block-linear home-box-left-content-item ${value ? 'active' : ''}`}
-                    key={`home-box-left-content-item-${index}`}
-                    onClick={() => {
-                      postAllStatus({ value }).then((res: any) => {
-                        if (res?.code === 200) {
-                          Toast.show({
-                            icon: 'success',
-                            content: '操作成功',
-                          });
-                        } else {
-                          Toast.show({
-                            icon: 'fail',
-                            content: '操作失败',
-                          });
-                        }
-                      });
-                    }}
-                  >
-                    <img
-                      src={!!value ? lightingOn : lightingOff} alt=""
-                      className='home-box-left-content-item-icon'
-                    />
-                    {title}
-                  </div>
-                )
-              })
+            (videoList || [])?.map((item: any, index: number) => {
+              const { id = guid(), url, name } = item;
+              return <div
+                className="home-content-item"
+                key={`home-content-item-${index}`}
+                onClick={() => setActionVisible(id)}
+              >
+                <div className="home-content-item-text">
+                  {name || `视频 ${index + 1}`}
+                </div>
+              </div>
+            })
           }
         </div>
-      </div>
-      <div className="flex-box-column home-box-right glass-block">
-        <div className="home-box-right-title">
-          系统控制
-        </div>
-        <div className="flex-box home-box-right-content">
-          {
-            [
-              { title: '情景模式', key: 'scene', value: 0 }, { title: '设置中心', key: 'setting', value: 1 },
-              { title: '切换主题', key: 'theme', value: 2 }, { title: '重启服务器', key: 'reload', value: 3 }
-            ]
-              .map((item: any, index: number) => {
-                const { title, value, key } = item;
-                return (
-                  <div
-                    className={`flex-box-center glass-block home-box-right-content-item`}
-                    key={`home-box-right-content-item-${key}`}
-                    onClick={() => {
-                      if (key === 'reload') {
-                        reStartServer({}).then((res: any) => {
-                          if (res?.code === 200) {
-                            Toast.show({
-                              icon: 'success',
-                              content: '重启成功',
-                            });
-                          } else {
-                            Toast.show({
-                              icon: 'fail',
-                              content: '重启失败',
-                            });
-                          };
-                        });
-                      } else if (key === 'scene') {
-                        history.push(`/tab-bar/index/${key}`);
-                      } else if (key === 'setting') {
-                        history.push(`/tab-bar/index/${key}`);
-                      }
-                    }}
+      </PullToRefresh>
+      <ActionSheet
+        visible={!!actionVisible}
+        actions={actions}
+        onClose={() => setActionVisible('')}
+      />
+      {
+        addVideo ?
+          <Modal
+            width="90vw"
+            wrapClassName="video-add-modal-content"
+            centered
+            open={addVideo}
+            maskClosable={false}
+            getContainer={false}
+            destroyOnClose={true}
+            closable={false}
+            footer={null}
+            onCancel={() => onAddVideoCancel()}
+          >
+            <div className="flex-box-column video-add-modal">
+              <div className="video-add-modal-title">
+                <div className="flex-box-center video-add-modal-title-text">
+                  请添加视频
+                </div>
+              </div>
+              <div className="flex-box-center video-add-modal-content">
+                <Form
+                  form={form}
+                  layout={'vertical'}
+                  scrollToFirstError
+                >
+                  <Form.Item
+                    name='name'
+                    label='视频名称'
+                    rules={[{ required: true, message: '名称不能为空' }]}
                   >
-                    <img src={renderTabItemIcon(key)} alt="" className='home-box-right-content-item-icon' />
-                    {title}
+                    <Input placeholder='请输入视频名称' />
+                  </Form.Item>
+                  <Form.Item
+                    name='url'
+                    label='视频链接'
+                    rules={[{ required: true, message: '链接不能为空' }]}
+                  >
+                    <Input placeholder='请输入视频链接' />
+                  </Form.Item>
+                </Form>
+              </div>
+              <div className="flex-box-center video-add-modal-footer">
+                <div
+                  className="flex-box-center video-add-modal-footer-btn1"
+                  onClick={() => onAddVideoCancel()}
+                >
+                  <div className="video-add-modal-footer-btn-text">
+                    取消
                   </div>
-                )
-              })
-          }
-        </div>
-      </div>
-    </div>
+                </div>
+                <div
+                  className="flex-box-center video-add-modal-footer-btn"
+                  onClick={() => {
+                    OnAddVideo();
+                  }}
+                >
+                  <div className="video-add-modal-footer-btn-text">
+                    提交
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Modal>
+          : null
+      }
+    </div >
   );
 }
