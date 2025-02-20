@@ -18,6 +18,7 @@ import btn2 from '@/assets/images/button/red-btn3.png';
 import { Form, Modal } from 'antd';
 import { deleteVideoService, getVideoListService, getVideoPlayService, postAddVideoService } from '@/services/api';
 import { guid } from '@/utils/utils';
+import AutoLandscape from '@/layouts/AutoLandscape';
 
 export default function IndexPage() {
   const timerRef = useRef<any>(null);
@@ -108,109 +109,112 @@ export default function IndexPage() {
   ]
 
   return (
-    <div className={`flex-box-column ${styles.homeWarp}`}>
-      <PullToRefresh
-        onRefresh={async () => {
-          getVideoList();
-        }}
-      >
-        <div className="flex-box-justify-end home-top">
-          <div className="home-top-btn" onClick={() => {
-            setAddVideo(true);
-          }}>
-            <div className="home-top-btn-text">
-              添加视频
+    <AutoLandscape>
+      <div className={`flex-box-column ${styles.homeWarp}`}>
+        <PullToRefresh
+          onRefresh={async () => {
+            getVideoList();
+          }}
+        >
+          <div className="flex-box-justify-end home-top">
+            <div className="home-top-btn" onClick={() => {
+              setAddVideo(true);
+            }}>
+              <div className="home-top-btn-text">
+                添加视频
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex-box home-content">
-          {
-            (videoList || [])?.map((item: any, index: number) => {
-              const { id = guid(), url, name } = item;
-              return <div
-                className="home-content-item"
-                key={`home-content-item-${index}`}
-                onClick={() => setActionVisible(id)}
-              >
-                <div className="home-content-item-text">
-                  {name || `视频 ${index + 1}`}
-                </div>
-              </div>
-            })
-          }
-        </div>
-      </PullToRefresh>
-      <ActionSheet
-        visible={!!actionVisible}
-        actions={actions}
-        onClose={() => setActionVisible('')}
-      />
-      {
-        addVideo ?
-          <Modal
-            width="90vw"
-            wrapClassName="video-add-modal-content"
-            centered
-            open={addVideo}
-            maskClosable={false}
-            getContainer={false}
-            destroyOnClose={true}
-            closable={false}
-            footer={null}
-            onCancel={() => onAddVideoCancel()}
-          >
-            <div className="flex-box-column video-add-modal">
-              <div className="video-add-modal-title">
-                <div className="flex-box-center video-add-modal-title-text">
-                  请添加视频
-                </div>
-              </div>
-              <div className="flex-box-center video-add-modal-content">
-                <Form
-                  form={form}
-                  layout={'vertical'}
-                  scrollToFirstError
+          <div className="flex-box home-content">
+            {
+              (videoList || [])?.map((item: any, index: number) => {
+                const { id = guid(), url, name } = item;
+                return <div
+                  className="home-content-item"
+                  key={`home-content-item-${index}`}
+                  onClick={() => setActionVisible(id)}
                 >
-                  <Form.Item
-                    name='name'
-                    label='视频名称'
-                    rules={[{ required: true, message: '名称不能为空' }]}
-                  >
-                    <Input placeholder='请输入视频名称' />
-                  </Form.Item>
-                  <Form.Item
-                    name='url'
-                    label='视频链接'
-                    rules={[{ required: true, message: '链接不能为空' }]}
-                  >
-                    <Input placeholder='请输入视频链接' />
-                  </Form.Item>
-                </Form>
-              </div>
-              <div className="flex-box-center video-add-modal-footer">
-                <div
-                  className="flex-box-center video-add-modal-footer-btn1"
-                  onClick={() => onAddVideoCancel()}
-                >
-                  <div className="video-add-modal-footer-btn-text">
-                    取消
+                  <div className="home-content-item-text">
+                    {name || `视频 ${index + 1}`}
                   </div>
                 </div>
-                <div
-                  className="flex-box-center video-add-modal-footer-btn"
-                  onClick={() => {
-                    OnAddVideo();
-                  }}
-                >
-                  <div className="video-add-modal-footer-btn-text">
-                    提交
+              })
+            }
+          </div>
+        </PullToRefresh>
+        <ActionSheet
+          visible={!!actionVisible}
+          actions={actions}
+          onClose={() => setActionVisible('')}
+        />
+        {
+          addVideo ?
+            <Modal
+              width="90%"
+              height="90%"
+              wrapClassName="video-add-modal-content"
+              centered
+              open={addVideo}
+              maskClosable={false}
+              getContainer={false}
+              destroyOnClose={true}
+              closable={false}
+              footer={null}
+              onCancel={() => onAddVideoCancel()}
+            >
+              <div className="flex-box-column video-add-modal">
+                <div className="video-add-modal-title">
+                  <div className="flex-box-center video-add-modal-title-text">
+                    添加视频
+                  </div>
+                </div>
+                <div className="flex-box-center video-add-modal-content">
+                  <Form
+                    form={form}
+                    layout={'vertical'}
+                    scrollToFirstError
+                  >
+                    <Form.Item
+                      name='name'
+                      label='视频名称'
+                      rules={[{ required: true, message: '名称不能为空' }]}
+                    >
+                      <Input placeholder='请输入视频名称' />
+                    </Form.Item>
+                    <Form.Item
+                      name='url'
+                      label='视频链接'
+                      rules={[{ required: true, message: '链接不能为空' }]}
+                    >
+                      <Input placeholder='请输入视频链接' />
+                    </Form.Item>
+                  </Form>
+                </div>
+                <div className="flex-box-center video-add-modal-footer">
+                  <div
+                    className="flex-box-center video-add-modal-footer-btn1"
+                    onClick={() => onAddVideoCancel()}
+                  >
+                    <div className="video-add-modal-footer-btn-text">
+                      取消
+                    </div>
+                  </div>
+                  <div
+                    className="flex-box-center video-add-modal-footer-btn"
+                    onClick={() => {
+                      OnAddVideo();
+                    }}
+                  >
+                    <div className="video-add-modal-footer-btn-text">
+                      提交
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Modal>
-          : null
-      }
-    </div >
+            </Modal>
+            : null
+        }
+      </div >
+    </AutoLandscape>
   );
 }

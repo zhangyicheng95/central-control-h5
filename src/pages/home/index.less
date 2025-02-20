@@ -42,6 +42,7 @@
       &-item {
         width: calc(25% - 16px * 3 / 4);
         min-width: 104px;
+        max-width: 200px;
         text-align: center;
         background-image: url('@/assets/images/button/blue-btn2.png');
         background-size: 100% 100%;
@@ -61,17 +62,29 @@
       }
     }
 
+    .ant-modal> :first-child {
+      height: 100%;
+    }
+
     .video-add-modal-content {
       background: transparent;
 
       .ant-modal-content {
+        width: 100%;
+        height: 100%;
         background-color: transparent;
         box-shadow: none;
+        padding: 0;
+
+        .ant-modal-body {
+          width: 100%;
+          height: 100%;
+        }
       }
 
       .video-add-modal {
         width: 100%;
-        height: 90vh;
+        height: 100%;
         background-image: url('@/assets/images/background/modal-bg2.png');
         background-size: 100% 100%;
         background-position: center;
