@@ -2,7 +2,6 @@ import { history } from '@umijs/max';
 import {
   ActionSheet,
   Button,
-
   Grid,
   Input,
   Popover,
@@ -15,34 +14,47 @@ import {
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './index.less';
 import btn2 from '@/assets/images/button/red-btn3.png';
-import { Form, Modal } from 'antd';
-import { deleteVideoService, getVideoListService, getVideoPlayService, postAddVideoService } from '@/services/api';
+import { Form, Modal, Select } from 'antd';
+import { deleteVideoService, getFilesListService, getVideoListService, getVideoPlayService, postAddVideoService } from '@/services/api';
 import { guid } from '@/utils/utils';
 import AutoLandscape from '@/layouts/AutoLandscape';
 
 export default function IndexPage() {
   const timerRef = useRef<any>(null);
   const [form] = Form.useForm();
+  const [filesList, setFilesList] = useState<any[]>([]);
   const [addVideo, setAddVideo] = useState(false);
-  const [videoList, setVideoList] = useState<any[]>([
-    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-  ]);
+  const [videoList, setVideoList] = useState<any[]>([]);
   const [actionVisible, setActionVisible] = useState('');
 
-  // 初始化获取已添加的视频列表
-  const getVideoList = () => {
-    getVideoListService().then((res: any) => {
-      if (res?.code === '200') {
-        setVideoList(res?.data || []);
+  // 获取静态资源列表
+  const getFilesList = () => {
+    getFilesListService().then((res: any) => {
+      if (res?.code == 'SUCCESS') {
+        setFilesList(res?.data?.files || []);
       } else {
         Toast.show({
-          content: res?.message || '获取视频列表失败',
+          content: res?.message || '获取静态资源列表失败',
           icon: 'fail',
         });
       }
     });
-  }
+  };
+  // 初始化获取已添加的资源列表
+  const getVideoList = () => {
+    getVideoListService().then((res: any) => {
+      if (res?.code == 'SUCCESS') {
+        setVideoList(res?.data || []);
+      } else {
+        Toast.show({
+          content: res?.message || '获取资源列表失败',
+          icon: 'fail',
+        });
+      }
+    });
+  };
   useEffect(() => {
+    getFilesList();
     getVideoList();
   }, []);
   // 关闭添加窗口
@@ -50,12 +62,15 @@ export default function IndexPage() {
     setAddVideo(false);
     form.resetFields();
   };
-  // 添加视频
+  // 添加资源
   const OnAddVideo = () => {
     form.validateFields().then((values) => {
-      postAddVideoService(values).then((res: any) => {
-        if (res?.code === '200') {
-          setVideoList(res?.data || []);
+      postAddVideoService({
+        ...values,
+        "group_id": 0
+      }).then((res: any) => {
+        if (res?.code == 'SUCCESS') {
+          getVideoList();
           onAddVideoCancel();
         } else {
           Toast.show({
@@ -66,15 +81,15 @@ export default function IndexPage() {
       });
     });
   };
-  // 播放视频
+  // 播放资源
   const onPlayVideo = (id: string) => {
-    getVideoPlayService({ id }).then((res: any) => {
-      console.log(res);
-      if (res?.code === '200') {
+    getVideoPlayService({ button_id: id, fullscreen: true }).then((res: any) => {
+      if (res?.code === 'SUCCESS') {
         Toast.show({
           content: '播放成功',
-          icon: 'success',
+          icon: 'SUCCESS',
         });
+        setActionVisible('');
       } else {
         Toast.show({
           content: res?.message || '播放失败',
@@ -83,11 +98,12 @@ export default function IndexPage() {
       }
     });
   };
-  // 删除视频
+  // 删除资源
   const onDeleteVideo = (id: string) => {
-    deleteVideoService({ id }).then((res: any) => {
-      if (res?.code === '200') {
+    deleteVideoService(id).then((res: any) => {
+      if (res?.code === 'SUCCESS') {
         getVideoList();
+        setActionVisible('');
       } else {
         Toast.show({
           content: res?.message || '删除失败',
@@ -97,7 +113,7 @@ export default function IndexPage() {
     });
   }
   const actions: any[] = [
-    { text: '播放此视频', key: 'play', onClick: () => onPlayVideo(actionVisible) },
+    { text: '播放此资源', key: 'play', onClick: () => onPlayVideo(actionVisible) },
     {
       text: '删除',
       key: 'delete',
@@ -113,6 +129,7 @@ export default function IndexPage() {
       <div className={`flex-box-column ${styles.homeWarp}`}>
         <PullToRefresh
           onRefresh={async () => {
+            getFilesList();
             getVideoList();
           }}
         >
@@ -121,7 +138,7 @@ export default function IndexPage() {
               setAddVideo(true);
             }}>
               <div className="home-top-btn-text">
-                添加视频
+                添加资源
               </div>
             </div>
           </div>
@@ -135,7 +152,7 @@ export default function IndexPage() {
                   onClick={() => setActionVisible(id)}
                 >
                   <div className="home-content-item-text">
-                    {name || `视频 ${index + 1}`}
+                    {name || `资源 ${index + 1}`}
                   </div>
                 </div>
               })
@@ -165,7 +182,7 @@ export default function IndexPage() {
               <div className="flex-box-column video-add-modal">
                 <div className="video-add-modal-title">
                   <div className="flex-box-center video-add-modal-title-text">
-                    添加视频
+                    添加资源
                   </div>
                 </div>
                 <div className="flex-box-center video-add-modal-content">
@@ -176,17 +193,27 @@ export default function IndexPage() {
                   >
                     <Form.Item
                       name='name'
-                      label='视频名称'
+                      label='按钮名称'
                       rules={[{ required: true, message: '名称不能为空' }]}
                     >
-                      <Input placeholder='请输入视频名称' />
+                      <Input placeholder='请输入按钮名称' autoComplete="off" />
                     </Form.Item>
                     <Form.Item
-                      name='url'
-                      label='视频链接'
+                      name='file_name'
+                      label='资源链接'
                       rules={[{ required: true, message: '链接不能为空' }]}
                     >
-                      <Input placeholder='请输入视频链接' />
+                      <Select
+                        showSearch
+                        placeholder='请选择资源'
+                        options={filesList?.map((item: any) => ({
+                          value: item,
+                          label: item,
+                        }))}
+                        getPopupContainer={(triggerNode: any) => {
+                          return triggerNode?.parentNode || document.body;
+                        }}
+                      />
                     </Form.Item>
                   </Form>
                 </div>

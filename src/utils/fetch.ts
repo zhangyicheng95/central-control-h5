@@ -13,7 +13,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = false;
 // axios.defaults.crossDomain = true;
 axios.defaults.timeout = 30000;
-export const BASE_IP = 'localhost:8000';
+export const BASE_IP = '192.168.199.146:8000';
 export const dpmDomain = `http://${BASE_IP}`;
 // 实例化axios
 const axiosInstance = axios.create({

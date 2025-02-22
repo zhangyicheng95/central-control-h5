@@ -89,10 +89,28 @@
         background-size: 100% 100%;
         background-position: center;
         background-repeat: no-repeat;
-        font-size: 18px;
         color: #eee;
         overflow: hidden;
         user-select: text;
+
+        .ant-select {
+          * {
+            font-size: 20px;
+          }
+        }
+
+        .ant-select-selector {
+          background: transparent;
+          border: none;
+          padding: 0;
+        }
+
+        .ant-select-selection-item,
+        .ant-select-selection-placeholder {
+          background-image: @fontColor;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
 
         &-title {
           width: 42%;
