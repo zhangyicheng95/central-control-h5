@@ -26,6 +26,7 @@ export default function IndexPage() {
   const [addVideo, setAddVideo] = useState(false);
   const [videoList, setVideoList] = useState<any[]>([]);
   const [actionVisible, setActionVisible] = useState<any>({});
+  const [editVisible, setEditVisible] = useState(false);
 
   // 获取静态资源列表
   const getFilesList = () => {
@@ -120,7 +121,13 @@ export default function IndexPage() {
     });
   };
   const actions: any[] = [
-    { text: '播放', key: 'play', onClick: () => onPlayVideo() },
+    {
+      text: '编辑', key: 'edit', onClick: () => {
+        setAddVideo(true);
+        form.setFieldsValue(actionVisible);
+        setActionVisible({});
+      }
+    },
     {
       text: '删除',
       key: 'delete',
@@ -130,14 +137,6 @@ export default function IndexPage() {
       onClick: () => onDeleteVideo(actionVisible?.id),
     },
   ];
-  // 长按开始
-  const handlePressStart = (e: any, item: any) => {
-    e.preventDefault(); // 阻止默认行为
-    e.stopPropagation();
-    timerRef.current = setTimeout(() => {
-      setActionVisible(item);
-    }, 500);
-  };
 
   return (
     <AutoLandscape>
@@ -148,7 +147,14 @@ export default function IndexPage() {
             getVideoList();
           }}
         >
-          <div className="flex-box-justify-end home-top">
+          <div className="flex-box-justify-between home-top">
+            <div className="home-top-btn" onClick={() => {
+              setEditVisible(!editVisible);
+            }}>
+              <div className="home-top-btn-text">
+                {editVisible ? '取消' : '管理按钮'}
+              </div>
+            </div>
             <div className="home-top-btn" onClick={() => {
               setAddVideo(true);
             }}>
@@ -165,11 +171,12 @@ export default function IndexPage() {
                   className="home-content-item"
                   key={`home-content-item-${index}`}
                   onClick={(e: any) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onPlayVideo(item);
+                    if (editVisible) {
+                      setActionVisible(item);
+                    } else {
+                      onPlayVideo(item);
+                    }
                   }}
-                  onTouchStart={(e) => handlePressStart(e, item)}
                 >
                   <div className="home-content-item-text">
                     {name || `资源 ${index + 1}`}
