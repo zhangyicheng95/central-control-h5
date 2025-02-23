@@ -7,17 +7,6 @@ const AutoLandscape = (props: any) => {
             const isPortrait = window.matchMedia("(orientation: portrait)").matches;
             const htmlElement = document.documentElement;
 
-            // 检查浏览器是否支持全屏 API
-            if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-            } else if (document.documentElement.mozRequestFullScreen) {  // 针对 Firefox
-                document.documentElement.mozRequestFullScreen();
-            } else if (document.documentElement.webkitRequestFullscreen) {  // 针对 Chrome、Safari 和 Opera
-                document.documentElement.webkitRequestFullscreen();
-            } else if (document.documentElement.msRequestFullscreen) {  // 针对 IE/Edge
-                document.documentElement.msRequestFullscreen();
-            }
-
             if (isPortrait) {
                 // 竖屏时设置旋转样式
                 htmlElement.style.transform = 'rotate(90deg)';

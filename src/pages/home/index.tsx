@@ -15,7 +15,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import styles from './index.less';
 import btn2 from '@/assets/images/button/red-btn3.png';
 import { Form, Modal, Select } from 'antd';
-import { deleteVideoService, getFilesListService, getVideoListService, getVideoPlayService, postAddVideoService } from '@/services/api';
+import { deleteVideoService, getFilesListService, getVideoInfoService, getVideoListService, getVideoPlayService, postAddVideoService } from '@/services/api';
 import { guid } from '@/utils/utils';
 import AutoLandscape from '@/layouts/AutoLandscape';
 
@@ -25,7 +25,7 @@ export default function IndexPage() {
   const [filesList, setFilesList] = useState<any[]>([]);
   const [addVideo, setAddVideo] = useState(false);
   const [videoList, setVideoList] = useState<any[]>([]);
-  const [actionVisible, setActionVisible] = useState('');
+  const [actionVisible, setActionVisible] = useState<any>({});
 
   // 获取静态资源列表
   const getFilesList = () => {
@@ -82,28 +82,35 @@ export default function IndexPage() {
     });
   };
   // 播放资源
-  const onPlayVideo = (id: string) => {
-    getVideoPlayService({ button_id: id, fullscreen: true }).then((res: any) => {
-      if (res?.code === 'SUCCESS') {
-        Toast.show({
-          content: '播放成功',
-          icon: 'SUCCESS',
-        });
-        setActionVisible('');
-      } else {
-        Toast.show({
-          content: res?.message || '播放失败',
-          icon: 'fail',
-        });
-      }
-    });
+  const onPlayVideo = (item?: any) => {
+    if (!item) {
+      item = actionVisible;
+    };
+    if (item?.file_name?.indexOf('.mp4') > -1) {
+      history.push(`/home/video?id=${item?.id}`);
+    } else {
+      getVideoPlayService({ button_id: item?.id, fullscreen: false }).then((res: any) => {
+        if (res?.code === 'SUCCESS') {
+          Toast.show({
+            content: '播放成功',
+            icon: 'SUCCESS',
+          });
+          setActionVisible({});
+        } else {
+          Toast.show({
+            content: res?.message || '播放失败',
+            icon: 'fail',
+          });
+        }
+      });
+    };
   };
   // 删除资源
   const onDeleteVideo = (id: string) => {
     deleteVideoService(id).then((res: any) => {
       if (res?.code === 'SUCCESS') {
         getVideoList();
-        setActionVisible('');
+        setActionVisible({});
       } else {
         Toast.show({
           content: res?.message || '删除失败',
@@ -111,18 +118,35 @@ export default function IndexPage() {
         });
       }
     });
-  }
+  };
   const actions: any[] = [
-    { text: '播放此资源', key: 'play', onClick: () => onPlayVideo(actionVisible) },
+    { text: '播放', key: 'play', onClick: () => onPlayVideo() },
     {
       text: '删除',
       key: 'delete',
-      description: '删除后数据不可恢复',
+      // description: '删除后数据不可恢复',
       danger: true,
-      bold: true,
-      onClick: () => onDeleteVideo(actionVisible),
+      // bold: true,
+      onClick: () => onDeleteVideo(actionVisible?.id),
     },
-  ]
+  ];
+  // 长按开始
+  const handlePressStart = (e: any, item: any) => {
+    e.preventDefault(); // 阻止默认行为
+    e.stopPropagation();
+    timerRef.current = setTimeout(() => {
+      setActionVisible(item);
+    }, 500);
+  };
+
+  // 长按结束
+  const handlePressEnd = (e: any) => {
+    e.preventDefault(); // 阻止默认行为
+    e.stopPropagation();
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  };
 
   return (
     <AutoLandscape>
@@ -149,7 +173,13 @@ export default function IndexPage() {
                 return <div
                   className="home-content-item"
                   key={`home-content-item-${index}`}
-                  onClick={() => setActionVisible(id)}
+                  onClick={() => {
+                    onPlayVideo(item);
+                  }}
+                  onTouchStart={(e) => handlePressStart(e, item)}
+                  onTouchEnd={(e) => handlePressEnd(e)}
+                  onTouchCancel={(e) => handlePressEnd(e)}
+                  onTouchMove={(e) => handlePressEnd(e)}
                 >
                   <div className="home-content-item-text">
                     {name || `资源 ${index + 1}`}
@@ -160,9 +190,9 @@ export default function IndexPage() {
           </div>
         </PullToRefresh>
         <ActionSheet
-          visible={!!actionVisible}
+          visible={!!actionVisible?.id}
           actions={actions}
-          onClose={() => setActionVisible('')}
+          onClose={() => setActionVisible({})}
         />
         {
           addVideo ?
@@ -204,7 +234,6 @@ export default function IndexPage() {
                       rules={[{ required: true, message: '链接不能为空' }]}
                     >
                       <Select
-                        showSearch
                         placeholder='请选择资源'
                         options={filesList?.map((item: any) => ({
                           value: item,

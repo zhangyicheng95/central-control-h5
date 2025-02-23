@@ -9,6 +9,11 @@ export default [
     layout: false,
     component: '@/pages/home/index',
   },
+  {
+    path: '/home/video',
+    layout: false,
+    component: '@/pages/home/video/index',
+  },
   { path: '/login', component: '@/pages/login/index', layout: false },
   { path: '/home', component: '@/pages/home/index', layout: false },
   { path: '/*', component: '@/pages/404', layout: false },
