@@ -139,15 +139,6 @@ export default function IndexPage() {
     }, 500);
   };
 
-  // 长按结束
-  const handlePressEnd = (e: any) => {
-    e.preventDefault(); // 阻止默认行为
-    e.stopPropagation();
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-  };
-
   return (
     <AutoLandscape>
       <div className={`flex-box-column ${styles.homeWarp}`}>
@@ -173,13 +164,12 @@ export default function IndexPage() {
                 return <div
                   className="home-content-item"
                   key={`home-content-item-${index}`}
-                  onClick={() => {
+                  onClick={(e: any) => {
+                    e.preventDefault();
+                    e.stopPropagation();
                     onPlayVideo(item);
                   }}
                   onTouchStart={(e) => handlePressStart(e, item)}
-                  onTouchEnd={(e) => handlePressEnd(e)}
-                  onTouchCancel={(e) => handlePressEnd(e)}
-                  onTouchMove={(e) => handlePressEnd(e)}
                 >
                   <div className="home-content-item-text">
                     {name || `资源 ${index + 1}`}
