@@ -90,7 +90,7 @@ export default function IndexPage() {
     if (item?.file_name?.indexOf('.mp4') > -1) {
       history.push(`/home/video?id=${item?.id}`);
     } else {
-      getVideoPlayService({ button_id: item?.id, fullscreen: false }).then((res: any) => {
+      getVideoPlayService({ button_id: item?.id, fullscreen: true }).then((res: any) => {
         if (res?.code === 'SUCCESS') {
           Toast.show({
             content: '播放成功',

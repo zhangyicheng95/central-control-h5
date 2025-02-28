@@ -64,7 +64,7 @@ export default function VideoPage() {
     };
   };
   const initPlayVideo = () => {
-    getVideoPlayService({ button_id: id, fullscreen: false }).then((res: any) => {
+    getVideoPlayService({ button_id: id, fullscreen: true }).then((res: any) => {
       if (res?.code === 'SUCCESS') {
         isPlaying.current = true;
         connectWebSocket();
