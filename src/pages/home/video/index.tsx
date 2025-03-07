@@ -69,7 +69,7 @@ export default function VideoPage() {
     initPlayVideo();
 
     return () => {
-      webSocketRef.current?.close();
+      onStopVideo();
     }
   }, [id]);
   const goBack = () => {
