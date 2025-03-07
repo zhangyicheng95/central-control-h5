@@ -106,7 +106,7 @@ export default function IndexPage() {
   // 播放资源
   const onPlayVideo = (item: any) => {
     if (item?.file_name?.indexOf('.mp4') > -1) {
-      history.push(`/home/video?id=${item?.id}`);
+      history.push(`/home/video?id=${item?.id}&name=${item?.file_name}`);
     } else {
       getVideoPlayService({ button_id: item?.id, fullscreen: true }).then((res: any) => {
         if (res?.code === 'SUCCESS') {

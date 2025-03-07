@@ -12,6 +12,7 @@ import {
   PauseOutlined,
   XFilled,
   ReloadOutlined,
+  LeftOutlined,
 } from '@ant-design/icons';
 import { BASE_IP } from '@/utils/fetch';
 
@@ -22,6 +23,7 @@ export default function VideoPage() {
       ? GetQueryObj(location.href)
       : {};
   const id = params?.['id'];
+  const name = params?.['file_name'];
   const webSocketRef = useRef<any>(null);
   const isPlaying = useRef(true);
   const [videoSrc, setVideoSrc] = useState('');
@@ -53,7 +55,7 @@ export default function VideoPage() {
     };
   };
   const initPlayVideo = () => {
-    getVideoPlayService({ button_id: id, fullscreen: true }).then((res: any) => {
+    getVideoPlayService({ button_id: id, fullscreen: process.env.NODE_ENV !== 'development' }).then((res: any) => {
       if (res?.code === 'SUCCESS') {
         isPlaying.current = true;
         connectWebSocket();
@@ -128,10 +130,11 @@ export default function VideoPage() {
     <AutoLandscape>
       <div className={`flex-box-column ${styles.videoWarp}`}>
         <div className="video-box-top">
-          <div className="flex-box-center video-box-top-back">
-            <div className="video-box-top-back-text" onClick={() => goBack()}>
+          <div className="video-box-top-back">
+            {/* <div className="video-box-top-back-text" onClick={() => goBack()}>
               返 回
-            </div>
+            </div> */}
+            {name}
           </div>
         </div>
         <div className="flex-box video-box-content">
@@ -142,6 +145,10 @@ export default function VideoPage() {
           }
         </div>
         <div className="flex-box-center video-box-footer">
+          <div className="flex-box-center video-box-footer-item back-btn" onClick={() => goBack()}>
+            <LeftOutlined />
+            <div className="video-box-footer-item-text">返回</div>
+          </div>
           {
             [
               {
@@ -175,7 +182,10 @@ export default function VideoPage() {
             ]?.map((item: any, index: number) => {
               const { type, text, onClick } = item;
               return (
-                <div key={index} className="flex-box-center video-box-footer-item" onClick={onClick}>
+                <div
+                  key={index}
+                  className="flex-box-center video-box-footer-item" onClick={onClick}
+                >
                   {
                     type === 'play' ? <CaretRightFilled /> :
                       type === 'pause' ? <PauseOutlined /> :
@@ -183,7 +193,9 @@ export default function VideoPage() {
                           type === 'reload' ? <ReloadOutlined /> :
                             null
                   }
-                  <div className="video-box-footer-item-text">{item.text}</div>
+                  <div
+                    className="video-box-footer-item-text"
+                  >{item.text}</div>
                 </div>
               )
             })
@@ -192,4 +204,11 @@ export default function VideoPage() {
       </div>
     </AutoLandscape>
   );
+}
+
+const colorTransform: any = {
+  'play': 'red',
+  'pause': 'blue',
+  'stop': 'green',
+  'reload': 'yellow',
 }

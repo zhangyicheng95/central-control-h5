@@ -14,21 +14,22 @@
   :global {
     .video-box-top {
       width: 100%;
-      padding: 8px;
+      // padding: 8px;
 
       &-back {
         height: 100%;
-        width: 100px;
-        background-color: #8b634a;
-        padding: 4px 16px;
+        // width: 100px;
+        // background-color: #8b634a;
+        padding: 2px 8px;
         cursor: pointer;
         border-radius: 8px;
+        line-height: 1;
+        // color: #eee;
 
         &-text {
           // background-image: @fontColor;
           // background-clip: text;
           // -webkit-text-fill-color: transparent;
-          color: #eee;
         }
       }
     }
@@ -48,6 +49,7 @@
       padding: 8px;
       gap: 24px;
       color: #eee;
+      position: relative;
 
       &-item {
         flex-direction: column;
@@ -56,6 +58,11 @@
         background-color: #8b634a;
         cursor: pointer;
         gap: 2px;
+      }
+
+      .back-btn {
+        position: absolute;
+        left: 8px;
       }
     }
   }
