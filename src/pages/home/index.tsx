@@ -1,32 +1,32 @@
 import { history } from '@umijs/max';
 import {
   ActionSheet,
-  Button,
-  Grid,
   Input,
-  Popover,
   PullToRefresh,
-  Space,
-  Swiper,
-  Switch,
   Toast,
 } from 'antd-mobile';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
-import btn2 from '@/assets/images/button/red-btn3.png';
 import { Form, Modal, Select } from 'antd';
-import { deleteVideoService, getFilesListService, getVideoInfoService, getVideoListService, getVideoPlayService, postAddVideoService } from '@/services/api';
+import { deleteVideoService, getFilesListService, getVideoListService, getVideoPlayService, postAddVideoService, putEditVideoService } from '@/services/api';
 import { guid } from '@/utils/utils';
 import AutoLandscape from '@/layouts/AutoLandscape';
 
 export default function IndexPage() {
   const timerRef = useRef<any>(null);
   const [form] = Form.useForm();
+  // 下拉选择静态资源列表
   const [filesList, setFilesList] = useState<any[]>([]);
+  // 添加资源
   const [addVideo, setAddVideo] = useState(false);
+  // 资源列表
   const [videoList, setVideoList] = useState<any[]>([]);
-  const [actionVisible, setActionVisible] = useState<any>({});
+  // 编辑资源
   const [editVisible, setEditVisible] = useState(false);
+  // 操作资源
+  const [actionVisible, setActionVisible] = useState(false);
+  // 编辑资源
+  const [editItem, setEditItem] = useState<any>({});
 
   // 获取静态资源列表
   const getFilesList = () => {
@@ -62,6 +62,7 @@ export default function IndexPage() {
   const onAddVideoCancel = () => {
     setAddVideo(false);
     form.resetFields();
+    setEditItem({});
   };
   // 添加资源
   const OnAddVideo = () => {
@@ -82,11 +83,28 @@ export default function IndexPage() {
       });
     });
   };
+  // 修改资源
+  const onEditVideo = () => {
+    form.validateFields().then((values) => {
+      putEditVideoService(editItem?.id, {
+        ...editItem,
+        ...values,
+        "group_id": 0
+      }).then((res: any) => {
+        if (res?.code === 'SUCCESS') {
+          getVideoList();
+          onAddVideoCancel();
+        } else {
+          Toast.show({
+            content: res?.message || '修改失败',
+            icon: 'fail',
+          });
+        }
+      });
+    });
+  };
   // 播放资源
-  const onPlayVideo = (item?: any) => {
-    if (!item) {
-      item = actionVisible;
-    };
+  const onPlayVideo = (item: any) => {
     if (item?.file_name?.indexOf('.mp4') > -1) {
       history.push(`/home/video?id=${item?.id}`);
     } else {
@@ -96,7 +114,6 @@ export default function IndexPage() {
             content: '播放成功',
             icon: 'SUCCESS',
           });
-          setActionVisible({});
         } else {
           Toast.show({
             content: res?.message || '播放失败',
@@ -111,7 +128,7 @@ export default function IndexPage() {
     deleteVideoService(id).then((res: any) => {
       if (res?.code === 'SUCCESS') {
         getVideoList();
-        setActionVisible({});
+        onAddVideoCancel();
       } else {
         Toast.show({
           content: res?.message || '删除失败',
@@ -124,8 +141,8 @@ export default function IndexPage() {
     {
       text: '编辑', key: 'edit', onClick: () => {
         setAddVideo(true);
-        form.setFieldsValue(actionVisible);
-        setActionVisible({});
+        form.setFieldsValue(editItem);
+        setActionVisible(false);
       }
     },
     {
@@ -134,7 +151,7 @@ export default function IndexPage() {
       // description: '删除后数据不可恢复',
       danger: true,
       // bold: true,
-      onClick: () => onDeleteVideo(actionVisible?.id),
+      onClick: () => onDeleteVideo(editItem?.id),
     },
   ];
 
@@ -172,7 +189,8 @@ export default function IndexPage() {
                   key={`home-content-item-${index}`}
                   onClick={(e: any) => {
                     if (editVisible) {
-                      setActionVisible(item);
+                      setActionVisible(true);
+                      setEditItem(item)
                     } else {
                       onPlayVideo(item);
                     }
@@ -187,9 +205,9 @@ export default function IndexPage() {
           </div>
         </PullToRefresh>
         <ActionSheet
-          visible={!!actionVisible?.id}
+          visible={actionVisible}
           actions={actions}
-          onClose={() => setActionVisible({})}
+          onClose={() => setActionVisible(false)}
         />
         {
           addVideo ?
@@ -255,7 +273,11 @@ export default function IndexPage() {
                   <div
                     className="flex-box-center video-add-modal-footer-btn"
                     onClick={() => {
-                      OnAddVideo();
+                      if (editVisible) {
+                        onEditVideo();
+                      } else {
+                        OnAddVideo();
+                      }
                     }}
                   >
                     <div className="video-add-modal-footer-btn-text">

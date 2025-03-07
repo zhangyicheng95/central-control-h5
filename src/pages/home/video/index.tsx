@@ -1,22 +1,11 @@
 import { history } from '@umijs/max';
 import {
-  ActionSheet,
-  Button,
-  Grid,
-  Input,
-  Popover,
-  PullToRefresh,
-  Space,
-  Swiper,
-  Switch,
   Toast,
 } from 'antd-mobile';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
-import btn2 from '@/assets/images/button/red-btn3.png';
-import { Form, Modal, Select } from 'antd';
-import { controlVideoService, deleteVideoService, getFilesListService, getVideoInfoService, getVideoListService, getVideoPlayService, postAddVideoService } from '@/services/api';
-import { GetQueryObj, guid } from '@/utils/utils';
+import { controlVideoService, getVideoPlayService } from '@/services/api';
+import { GetQueryObj } from '@/utils/utils';
 import AutoLandscape from '@/layouts/AutoLandscape';
 import {
   CaretRightFilled,

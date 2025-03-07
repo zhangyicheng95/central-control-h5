@@ -19,13 +19,13 @@ export async function postAddVideoService(params: any) {
 export async function getVideoPlayService(params: any) {
     return fetchPost(`${V1}/command?${parseParamsToUrl(params)}`);
 };
-// 获取单个视频
-export async function getVideoInfoService(id: string) {
-    return fetchGet(`${V1}/buttons/${id}`);
-};
 // 删除视频
 export async function deleteVideoService(id: string) {
     return fetchDelete(`${V1}/buttons/${id}`);
+};
+// 修改视频
+export async function putEditVideoService(id: string, params: any) {
+    return fetchPut(`${V1}/buttons/${id}`, { body: params });
 };
 // 控制视频
 export async function controlVideoService(action: string) {
