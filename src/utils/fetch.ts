@@ -15,7 +15,7 @@ axios.defaults.withCredentials = false;
 axios.defaults.timeout = 30000;
 console.log(window?.location);
 
-export const BASE_IP = `${window?.location?.hostname}:8001`;
+export const BASE_IP = `${window?.location?.hostname}:8000`;
 export const dpmDomain = `http://${BASE_IP}`;
 // 实例化axios
 const axiosInstance = axios.create({
