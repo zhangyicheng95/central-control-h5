@@ -99,7 +99,7 @@ function axiosRequest(config: any) {
           return {
             status: 'failed',
             message:
-              error.response.data?.indexOf('<body>') > -1
+              error.response.data?.indexOf?.('<body>') > -1
                 ? error.response.data.split('<body>')[1].split('</body>')[0]
                 : error.response.data,
           };

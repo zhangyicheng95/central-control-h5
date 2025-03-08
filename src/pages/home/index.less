@@ -1,4 +1,4 @@
-@fontColor: linear-gradient(to right, #8bf3ff, #dffdff, #4cecd9);
+@fontColor: linear-gradient(to right, #3d2f20, #ab7f54);
 
 .homeWarp {
   width: 100%;
@@ -18,16 +18,16 @@
   :global {
     .home-top {
       width: 100%;
-      margin-bottom: 16px;
+      margin-bottom: 36px;
 
       &-btn {
-        width: 152px;
+        width: 144px;
         text-align: center;
-        background-image: url('@/assets/images/button/blue-btn1.png');
+        background-image: url('@/assets/images/button/blue-btn6.png');
         background-size: 100% 100%;
         background-position: center;
         background-repeat: no-repeat;
-        padding: 8px 16px;
+        padding: 4px 12px;
         cursor: pointer;
 
         &-text {
@@ -35,6 +35,12 @@
           background-clip: text;
           -webkit-text-fill-color: transparent;
         }
+      }
+
+      &-title {
+        background-image: url('@/assets/images/button/title-btn.png');
+        width: 258px;
+        font-size: 24px;
       }
     }
 
@@ -48,11 +54,11 @@
         min-width: 104px;
         max-width: 200px;
         text-align: center;
-        background-image: url('@/assets/images/button/blue-btn2.png');
+        background-image: url('@/assets/images/button/blue-btn5.png');
         background-size: 100% 100%;
         background-position: center;
         background-repeat: no-repeat;
-        padding: 12px 16px;
+        padding: 8px 12px 10px;
         cursor: pointer;
 
         &-text {
@@ -114,6 +120,7 @@
           background-image: @fontColor;
           background-clip: text;
           -webkit-text-fill-color: transparent;
+          line-height: 1.2;
         }
 
         &-title {

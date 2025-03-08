@@ -31,3 +31,7 @@ export async function putEditVideoService(id: string, params: any) {
 export async function controlVideoService(action: string) {
     return fetchPost(`${V1}/video/control/${action}`);
 };
+// 返回桌面
+export async function getDesktopService() {
+    return fetchPost(`${V1}/video/return_to_desktop`);
+};

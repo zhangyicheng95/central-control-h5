@@ -8,7 +8,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.less';
 import { Form, Modal, Select } from 'antd';
-import { deleteVideoService, getFilesListService, getVideoListService, getVideoPlayService, postAddVideoService, putEditVideoService } from '@/services/api';
+import { deleteVideoService, getDesktopService, getFilesListService, getVideoListService, getVideoPlayService, postAddVideoService, putEditVideoService } from '@/services/api';
 import { guid } from '@/utils/utils';
 import AutoLandscape from '@/layouts/AutoLandscape';
 
@@ -25,6 +25,8 @@ export default function IndexPage() {
   const [editVisible, setEditVisible] = useState(false);
   // 操作资源
   const [actionVisible, setActionVisible] = useState(false);
+  // 操作按钮
+  const [actionVisible2, setActionVisible2] = useState(false);
   // 编辑资源
   const [editItem, setEditItem] = useState<any>({});
 
@@ -154,6 +156,22 @@ export default function IndexPage() {
       onClick: () => onDeleteVideo(editItem?.id),
     },
   ];
+  const actions2: any[] = [
+    {
+      text: '管理按钮', key: 'edit', onClick: () => {
+        setEditVisible(true);
+        setActionVisible2(false);
+      }
+    },
+    {
+      text: '添加按钮',
+      key: 'add',
+      onClick: () => {
+        setAddVideo(true);
+        setActionVisible2(false);
+      },
+    },
+  ];
 
   return (
     <AutoLandscape>
@@ -165,18 +183,25 @@ export default function IndexPage() {
           }}
         >
           <div className="flex-box-justify-between home-top">
-            <div className="home-top-btn" onClick={() => {
-              setEditVisible(!editVisible);
+            <div className="home-top-btn" onDoubleClick={() => {
+              getDesktopService();
             }}>
               <div className="home-top-btn-text">
-                {editVisible ? '取消' : '管理按钮'}
+                返回桌面
               </div>
             </div>
+            <div className='flex-box-center home-top-btn home-top-title' onClick={() => {
+              getDesktopService();
+            }}>艺术馆数智系统</div>
             <div className="home-top-btn" onClick={() => {
-              setAddVideo(true);
+              if (editVisible) {
+                setEditVisible(false);
+              } else {
+                setActionVisible2(true);
+              }
             }}>
               <div className="home-top-btn-text">
-                添加资源
+                {editVisible ? '完成' : '管理资源'}
               </div>
             </div>
           </div>
@@ -208,6 +233,11 @@ export default function IndexPage() {
           visible={actionVisible}
           actions={actions}
           onClose={() => setActionVisible(false)}
+        />
+        <ActionSheet
+          visible={actionVisible2}
+          actions={actions2}
+          onClose={() => setActionVisible2(false)}
         />
         {
           addVideo ?

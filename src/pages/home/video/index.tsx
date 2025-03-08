@@ -23,7 +23,7 @@ export default function VideoPage() {
       ? GetQueryObj(location.href)
       : {};
   const id = params?.['id'];
-  const name = params?.['file_name'];
+  const name = params?.['name'];
   const webSocketRef = useRef<any>(null);
   const isPlaying = useRef(true);
   const [videoSrc, setVideoSrc] = useState('');
@@ -129,14 +129,16 @@ export default function VideoPage() {
   return (
     <AutoLandscape>
       <div className={`flex-box-column ${styles.videoWarp}`}>
-        <div className="video-box-top">
+        {/* <div className="video-box-top">
           <div className="video-box-top-back">
-            {/* <div className="video-box-top-back-text" onClick={() => goBack()}>
+            <div className="video-box-top-back-text" onClick={() => goBack()}>
               返 回
-            </div> */}
-            {name}
+            </div>
+            <div className="video-box-top-back-text">
+              {name?.split?.('.mp4')?.[0]}
+            </div>
           </div>
-        </div>
+        </div> */}
         <div className="flex-box video-box-content">
           {
             isPlaying.current ?
