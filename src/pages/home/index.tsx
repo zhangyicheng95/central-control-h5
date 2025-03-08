@@ -183,7 +183,7 @@ export default function IndexPage() {
           }}
         >
           <div className="flex-box-justify-between home-top">
-            <div className="home-top-btn" onDoubleClick={() => {
+            <div className="home-top-btn" onClick={() => {
               getDesktopService();
             }}>
               <div className="home-top-btn-text">
