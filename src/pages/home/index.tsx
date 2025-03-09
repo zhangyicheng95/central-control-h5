@@ -243,9 +243,8 @@ export default function IndexPage() {
           addVideo ?
             <Modal
               width="90%"
-              height="90%"
+              // height="70%"
               wrapClassName="video-add-modal-content"
-              centered
               open={addVideo}
               maskClosable={false}
               getContainer={false}
@@ -263,7 +262,7 @@ export default function IndexPage() {
                 <div className="flex-box-center video-add-modal-content">
                   <Form
                     form={form}
-                    layout={'vertical'}
+                    layout={'horizontal'}
                     scrollToFirstError
                   >
                     <Form.Item

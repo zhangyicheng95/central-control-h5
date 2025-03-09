@@ -9,7 +9,6 @@
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
-  font-size: 20px;
 
   * {
     user-select: none;
@@ -40,7 +39,6 @@
       &-title {
         background-image: url('@/assets/images/button/title-btn.png');
         width: 258px;
-        font-size: 24px;
       }
     }
 
@@ -78,6 +76,7 @@
 
     .video-add-modal-content {
       background: transparent;
+      margin-top: -5%;
 
       .ant-modal-content {
         width: 100%;
@@ -102,10 +101,11 @@
         color: #eee;
         overflow: hidden;
         user-select: text;
+        font-size: var(--adm-font-size-1);
 
         .ant-select {
           * {
-            font-size: 20px;
+            font-size: var(--adm-font-size-1);
           }
         }
 
@@ -126,14 +126,14 @@
         &-title {
           width: 42%;
           margin: 0 auto;
-          font-size: 24px;
           font-weight: bolder;
-          margin-top: 5%;
+          margin-top: 3%;
           padding: 4px 16px;
           background-image: url('@/assets/images/button/blue-btn4.png');
           background-size: 100% 100%;
           background-position: center;
           background-repeat: no-repeat;
+          margin-bottom: 16px;
 
           &-text {
             width: 100%;
@@ -150,8 +150,8 @@
           width: 70%;
           flex: 1;
           margin: 0 auto;
+          overflow-x: hidden;
           overflow-y: auto;
-          margin-bottom: 16px;
 
           .ant-form {
             width: 100%;
@@ -164,7 +164,7 @@
               .ant-form-item-label>label,
               .adm-input-element,
               .ant-form-item-explain-error {
-                font-size: 20px;
+                font-size: var(--adm-font-size-1);
                 height: auto;
               }
 
@@ -176,6 +176,8 @@
               }
 
               .ant-form-item-label {
+                display: flex;
+                align-items: center;
                 padding: 0;
 
                 label {
@@ -196,14 +198,13 @@
 
         &-footer {
           gap: 24px;
-          margin-bottom: 10%;
-          font-size: 20px;
+          margin-bottom: 5%;
 
           &-btn,
           &-btn1 {
             width: 30%;
             height: 100%;
-            padding: 8px 16px;
+            padding: 4px 16px;
             border-radius: 16px;
             background: linear-gradient(135deg, rgba(28, 150, 115, 0.5) 0%, rgba(63, 98, 101, 0.1) 50%, rgba(14, 76, 80, 0.1) 100%);
             backdrop-filter: blur(10px);
@@ -211,6 +212,7 @@
             cursor: pointer;
 
             &-text {
+              font-size: inherit;
               background-image: @fontColor;
               background-clip: text;
               -webkit-text-fill-color: transparent;
