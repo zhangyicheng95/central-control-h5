@@ -9,6 +9,7 @@
   background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
+  position: relative;
 
   * {
     user-select: none;
@@ -68,10 +69,21 @@
           -webkit-text-fill-color: transparent;
         }
       }
+
+      &-item-switch {
+        background-image: url('@/assets/images/button/blue-btn6.png');
+      }
     }
 
     .ant-modal> :first-child {
       height: 100%;
+    }
+
+    .ant-modal-root {
+      position: absolute;
+      top: 10%;
+      left: 0;
+      width: 100%;
     }
 
     .video-add-modal-content {

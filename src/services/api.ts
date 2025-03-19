@@ -8,8 +8,8 @@ export async function getFilesListService() {
     return fetchGet(`${V1}/files`);
 };
 // 获取视频列表
-export async function getVideoListService() {
-    return fetchGet(`${V1}/buttons`);
+export async function getVideoListService(params: any) {
+    return fetchGet(`${V1}/buttons?${parseParamsToUrl(params)}`);
 };
 // 添加视频
 export async function postAddVideoService(params: any) {
@@ -34,4 +34,20 @@ export async function controlVideoService(action: string) {
 // 返回桌面
 export async function getDesktopService() {
     return fetchPost(`${V1}/video/return_to_desktop`);
+};
+// 获取按钮类型列表
+export async function getTypeListService() {
+    return fetchGet(`${V1}/button-groups`);
+};
+// 增加按钮类型
+export async function postAddTypeService(params: any) {
+    return fetchPost(`${V1}/button-groups`, { body: params });
+};
+// 删除按钮类型
+export async function deleteTypeService(id: string) {
+    return fetchDelete(`${V1}/button-groups/${id}`);
+};
+// 修改按钮类型
+export async function putEditTypeService(id: string, params: any) {
+    return fetchPut(`${V1}/button-groups/${id}`, { body: params });
 };

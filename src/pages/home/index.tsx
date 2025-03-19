@@ -2,13 +2,14 @@ import { history } from '@umijs/max';
 import {
   ActionSheet,
   Input,
+  Mask,
   PullToRefresh,
   Toast,
 } from 'antd-mobile';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './index.less';
 import { Form, Modal, Select } from 'antd';
-import { deleteVideoService, getDesktopService, getFilesListService, getVideoListService, getVideoPlayService, postAddVideoService, putEditVideoService } from '@/services/api';
+import { deleteVideoService, getDesktopService, getFilesListService, getTypeListService, getVideoListService, getVideoPlayService, postAddVideoService, putEditVideoService } from '@/services/api';
 import { guid } from '@/utils/utils';
 import AutoLandscape from '@/layouts/AutoLandscape';
 
@@ -20,7 +21,7 @@ export default function IndexPage() {
   // 添加资源
   const [addVideo, setAddVideo] = useState(false);
   // 资源列表
-  const [videoList, setVideoList] = useState<any[]>([]);
+  const [videoList, setVideoList] = useState<any[]>([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]);
   // 编辑资源
   const [editVisible, setEditVisible] = useState(false);
   // 操作资源
@@ -29,6 +30,12 @@ export default function IndexPage() {
   const [actionVisible2, setActionVisible2] = useState(false);
   // 编辑资源
   const [editItem, setEditItem] = useState<any>({});
+  // 切换按钮类型
+  const [actionVisible3, setActionVisible3] = useState(false);
+  // 按钮类型列表
+  const [typeList, setTypeList] = useState<any[]>([]);
+  // 当前按钮类型
+  const [currentType, setCurrentType] = useState(0);
 
   // 获取静态资源列表
   const getFilesList = () => {
@@ -45,7 +52,7 @@ export default function IndexPage() {
   };
   // 初始化获取已添加的资源列表
   const getVideoList = () => {
-    getVideoListService().then((res: any) => {
+    getVideoListService({ group_id: currentType }).then((res: any) => {
       if (res?.code == 'SUCCESS') {
         setVideoList(res?.data || []);
       } else {
@@ -56,9 +63,23 @@ export default function IndexPage() {
       }
     });
   };
+  // 获取按钮类型列表
+  const getTypeList = () => {
+    getTypeListService().then((res: any) => {
+      if (res?.code == 'SUCCESS') {
+        setTypeList(res?.data || []);
+      } else {
+        Toast.show({
+          content: res?.message || '获取按钮类型列表失败',
+          icon: 'fail',
+        });
+      }
+    });
+  };
   useEffect(() => {
     getFilesList();
     getVideoList();
+    getTypeList();
   }, []);
   // 关闭添加窗口
   const onAddVideoCancel = () => {
@@ -70,8 +91,8 @@ export default function IndexPage() {
   const OnAddVideo = () => {
     form.validateFields().then((values) => {
       postAddVideoService({
+        "group_id": 0,
         ...values,
-        "group_id": 0
       }).then((res: any) => {
         if (res?.code == 'SUCCESS') {
           getVideoList();
@@ -89,9 +110,9 @@ export default function IndexPage() {
   const onEditVideo = () => {
     form.validateFields().then((values) => {
       putEditVideoService(editItem?.id, {
+        "group_id": 0,
         ...editItem,
         ...values,
-        "group_id": 0
       }).then((res: any) => {
         if (res?.code === 'SUCCESS') {
           getVideoList();
@@ -172,6 +193,21 @@ export default function IndexPage() {
       },
     },
   ];
+  const actions3: any[] = useMemo(() => {
+    return typeList?.map((item: any) => {
+      return {
+        text: item?.name,
+        key: item?.id,
+        onClick: () => {
+          setCurrentType(item?.id);
+          setActionVisible3(false);
+        }
+      };
+    });
+  }, [typeList]);
+  useEffect(() => {
+    getVideoList();
+  }, [currentType]);
 
   return (
     <AutoLandscape>
@@ -206,6 +242,16 @@ export default function IndexPage() {
             </div>
           </div>
           <div className="flex-box home-content">
+            <div
+              className="home-content-item home-content-item-switch"
+              onClick={(e: any) => {
+                setActionVisible3(true);
+              }}
+            >
+              <div className="home-content-item-text">
+                类型: {typeList?.find((item: any) => item?.id == currentType)?.name || '切换'}
+              </div>
+            </div>
             {
               (videoList || [])?.map((item: any, index: number) => {
                 const { id = guid(), url, name } = item;
@@ -239,16 +285,22 @@ export default function IndexPage() {
           actions={actions2}
           onClose={() => setActionVisible2(false)}
         />
+        <ActionSheet
+          visible={actionVisible3}
+          actions={actions3}
+          onClose={() => setActionVisible3(false)}
+        />
         {
           addVideo ?
             <Modal
-              width="90%"
+              width="100%"
               // height="70%"
               wrapClassName="video-add-modal-content"
               open={addVideo}
               maskClosable={false}
               getContainer={false}
               destroyOnClose={true}
+              centered
               closable={false}
               footer={null}
               onCancel={() => onAddVideoCancel()}
@@ -271,6 +323,19 @@ export default function IndexPage() {
                       rules={[{ required: true, message: '名称不能为空' }]}
                     >
                       <Input placeholder='请输入按钮名称' autoComplete="off" />
+                    </Form.Item>
+                    <Form.Item
+                      name='group_id'
+                      label='按钮类型'
+                      rules={[{ required: true, message: '类型不能为空' }]}
+                    >
+                      <Select
+                        placeholder='请选择按钮类型'
+                        options={typeList?.map((item: any) => ({
+                          value: item?.id,
+                          label: item?.name,
+                        }))}
+                      />
                     </Form.Item>
                     <Form.Item
                       name='file_name'
