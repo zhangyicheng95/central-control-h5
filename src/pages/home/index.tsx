@@ -78,7 +78,7 @@ export default function IndexPage() {
   };
   useEffect(() => {
     getFilesList();
-    getVideoList();
+    // getVideoList();
     getTypeList();
   }, []);
   // 关闭添加窗口
