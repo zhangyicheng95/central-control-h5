@@ -3,6 +3,7 @@ import { useParams } from 'umi';
 import { history } from '@umijs/max';
 import { NavBar, ProgressBar, ProgressCircle, Result, Segmented, Slider, Space, Toast } from 'antd-mobile';
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { Form } from 'antd';
 import styles from './index.less';
 import { getMediumDetail } from '@/services/api';
 import backIcon from '@/assets/images/medium/back.svg';
@@ -21,6 +22,7 @@ export default () => {
   const [activeItem, setActiveItem] = useState<any>({});
   const [playStatus, setPlayStatus] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
+  const [form] = Form.useForm();
   // 右侧不同类型
   const segmentedOptions = [
     {
@@ -63,7 +65,7 @@ export default () => {
   }, [activeItem?.id])
 
   return (
-    <div className={`flex-box-column glass-block ${styles['medium-detail']}`}>
+    <Form form={form} className={`flex-box-column glass-block ${styles['medium-detail']}`}>
       <div className="flex-box medium-detail-header">
         <div className="medium-detail-header-title" onClick={back}>
           {mediumDetail.name}
@@ -105,6 +107,9 @@ export default () => {
                 // 设置播放的item
                 setActiveItem(item);
                 setCurrentTime(0);
+                form.setFieldsValue({
+                  currentTime: 0,
+                });
               }}
             >
               <div className="medium-detail-content-item-icon-box">
@@ -116,8 +121,11 @@ export default () => {
                     if (!currentItem?.duration) {
                       return;
                     };
-                    const currentTime = currentItem.currentTime;
-                    setCurrentTime(currentTime);
+                    const current = currentItem.currentTime;
+                    form.setFieldsValue({
+                      currentTime: current / currentItem?.duration * 100,
+                    });
+                    setCurrentTime(current);
                   }}
                   className='medium-detail-content-item-icon-box-video'
                 />
@@ -136,8 +144,11 @@ export default () => {
               if (!currentItem?.duration) {
                 return;
               };
-              const currentTime = currentItem.currentTime;
-              currentItem.currentTime = currentTime - 10;
+              const current = currentItem.currentTime;
+              currentItem.currentTime = current - 10;
+              form.setFieldsValue({
+                currentTime: currentItem.currentTime / currentItem?.duration * 100,
+              });
             }} />
           </div>
           <div className="medium-detail-footer-left-item">
@@ -162,8 +173,11 @@ export default () => {
               if (!currentItem?.duration) {
                 return;
               };
-              const currentTime = currentItem.currentTime;
-              currentItem.currentTime = currentTime + 10;
+              const current = currentItem.currentTime;
+              currentItem.currentTime = current + 10;
+              form.setFieldsValue({
+                currentTime: currentItem.currentTime / currentItem?.duration * 100,
+              });
             }} />
           </div>
         </div>
@@ -171,16 +185,24 @@ export default () => {
           <div className="medium-detail-footer-center-time">
             {!!currentTime ? getFormattedDuration(currentTime) : '00:00:00'}
           </div>
-          <Slider
-            disabled={!currentItem?.duration}
-            defaultValue={!!currentItem?.duration ? (currentTime / currentItem?.duration) : 0}
-            onAfterChange={(value: any) => {
-              const duration = currentItem?.duration;
-              const time = duration * value / 100;
-              currentItem.currentTime = time;
-              setCurrentTime(time);
-            }}
-          />
+          <Form.Item name="currentTime" style={{ flex: 1 }}>
+            <Slider
+              disabled={!currentItem?.duration}
+              onChange={() => {
+                currentItem.pause();
+              }}
+              onAfterChange={(value: any) => {
+                const duration = currentItem?.duration;
+                const time = duration * value / 100;
+                currentItem.currentTime = time;
+                form.setFieldsValue({
+                  currentTime: value,
+                });
+                setCurrentTime(time);
+                currentItem.play();
+              }}
+            />
+          </Form.Item>
           <div className="medium-detail-footer-center-time">
             {!!currentItem?.duration ? getFormattedDuration(currentItem?.duration) : '00:00:00'}
           </div>
@@ -193,6 +215,9 @@ export default () => {
               };
               currentItem.currentTime = 0;
               currentItem.play();
+              form.setFieldsValue({
+                currentTime: 0,
+              });
             }} />
           </div>
           <div className="medium-detail-footer-right-item">
@@ -213,6 +238,6 @@ export default () => {
           </div>
         </div>
       </div>
-    </div>
+    </Form>
   );
 };
